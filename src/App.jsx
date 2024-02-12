@@ -45,7 +45,7 @@ function App(props) {
 
   const [tasks, setTasks] = useState(props.tasks);
 
-  const taskList = tasks?.map((task) => (
+  const taskList = tasks.map((task) => (
     <Todo
       id={task.id}
       name={task.name}
@@ -53,8 +53,10 @@ function App(props) {
       key={task.id}
       toggleTaskCompleted={toggleTaskCompleted}
       deleteTask={deleteTask}
+      editTask={editTask}
     />
   ));
+  
 
   const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
   const headingText = `${taskList.length} ${tasksNoun} remaining`;
