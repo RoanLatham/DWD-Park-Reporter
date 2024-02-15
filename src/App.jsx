@@ -22,6 +22,16 @@ const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App(props) {
 
+  function usePersistedState(key, defaultValue){
+    const [state, setState] = useState(() => JSON.parse(localStorage.getItem((key)) || defaultValue));
+
+    useEffect(() => {
+      localStorage.setItem(key, JSON.stringify(state))
+    }, [key, state]);
+
+    return [state, setState];
+  }
+
   const [filter, setFilter] = useState("All");
 
   const filterList = FILTER_NAMES.map((name) => (
@@ -35,7 +45,9 @@ function App(props) {
 
   function addTask(name) {
     const newTask = { id: `todo-${nanoid()}`, name, completed: false };
-    setTasks([...tasks, newTask]);
+    const newTaskList = [...tasks, newTask]
+    setTasks(newTaskList);
+    //localStorage.setItem("tasks", JSON.stringify(newTaskList));
   }
 
   function toggleTaskCompleted(id) {
@@ -49,11 +61,13 @@ function App(props) {
       return task;
     });
     setTasks(updatedTasks);
+    //localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   }
 
   function deleteTask(id) {
     const remainingTasks = tasks.filter((task) => id !== task.id);
     setTasks(remainingTasks);
+    //localStorage.setItem("tasks", JSON.stringify(remainingTasks));
   }
 
   function editTask(id, newName) {
@@ -67,9 +81,11 @@ function App(props) {
       return task;
     });
     setTasks(editedTaskList);
+    //localStorage.setItem("tasks", JSON.stringify(editedTaskList));
   }
 
-  const [tasks, setTasks] = useState(props.tasks);
+  const [tasks, setTasks] = usePersistedState('tasks', []);
+  //const [tasks, setTasks] = useState(props.tasks);
 
   const taskList = tasks
   .filter(FILTER_MAP[filter])
