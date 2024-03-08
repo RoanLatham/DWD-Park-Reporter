@@ -30,10 +30,26 @@ async function addPhoto(id, imgSrc) {
 }
 
 function GetPhotoSrc(id) {
-  console.log("getPhotoSrc", id);
-  const img = useLiveQuery(() => db.photos.where("id").equals(id).toArray());
-  console.table(img);
-  if (Array.isArray(img)) return img[0].imgSrc;
+  try{
+    console.log("getPhotoSrc", id);
+
+    // Use useLiveQuery to query the database for the any photos with the specified ID
+    const img = useLiveQuery(() => db.photos.where("id").equals(id).toArray());
+
+    console.table(img);
+
+    if (Array.isArray(img) && img.length > 0) {
+      return img[0].imgSrc;
+    } else {
+      // Case for when no image exists in db yet
+      console.error(`No image found for ID ${id}`);
+      return null; 
+    }
+  } catch (error) {
+    // Catch for when unexpected errors occur
+    console.error(`Error fetching image for ID ${id}:`, error);
+    return null; 
+  }
 }
 
 export { addPhoto, GetPhotoSrc };
