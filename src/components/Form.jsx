@@ -1,13 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Form(props) {
-
     const [name, setName] = useState("");
+    const [addition, setAddition] = useState(false);
+
+    useEffect(() => {
+      if (addition) {
+        console.log("useEffect detected addition");
+        props.geoFindMe();
+        setAddition(false);
+      }
+    });
 
     function handleSubmit(event) {
-        event.preventDefault();
-        props.addTask(name);
-        setName("");
+      event.preventDefault();
+      if (!name.trim()) {
+        return;
+      }
+      setAddition(true);
+      props.addTask(name);
+      setName("");
     }
       
 
