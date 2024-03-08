@@ -138,6 +138,20 @@ function App(props) {
 
   const [lastInsertedId, setLastInsertedId] = useState("");
 
+  function photoedTask(id) {
+    console.log("photoedTask", id);
+    const photoedTaskList = tasks.map((task) => {
+      // if this task has the same ID as the edited task
+      if (id === task.id) {
+        //
+        return { ...task, photo: true };
+      }
+      return task;
+    });
+    console.log(photoedTaskList);
+    setTasks(photoedTaskList);
+  }
+
   const taskList = tasks
   .filter(FILTER_MAP[filter])
   .map((task) => (
