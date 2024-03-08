@@ -152,6 +152,27 @@ function App(props) {
     setTasks(photoedTaskList);
   }
 
+  // function photoedTask(id) {
+  //   console.log("photoedTask", id);
+  
+  //   // Find the index of the task with the matching ID
+  //   const taskIndex = tasks.findIndex((task) => task.id === id);
+  
+  //   if (taskIndex !== -1) {
+  //     // Create a shallow copy of the tasks array
+  //     const updatedTasks = [...tasks];
+  
+  //     // Update the specific task's photo property
+  //     updatedTasks[taskIndex].photo = true;
+  
+  //     // Update the state with the new tasks list
+  //     setTasks(updatedTasks);
+  //   } else {
+  //     console.warn(`Task with ID ${id} not found.`);
+  //   }
+  // }
+  
+
   const taskList = tasks
   .filter(FILTER_MAP[filter])
   .map((task) => (
@@ -160,9 +181,11 @@ function App(props) {
       name={task.name}
       completed={task.completed}
       key={task.id}
-      latitude={task.location.latitude}
-      longitude={task.location.longitude}
+      // latitude={task.location.latitude}
+      // longitude={task.location.longitude}
+      location={task.location} 
       toggleTaskCompleted={toggleTaskCompleted}
+      photoedTask={photoedTask}
       deleteTask={deleteTask}
       editTask={editTask}
     />
