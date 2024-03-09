@@ -98,6 +98,8 @@ function Todo(props) {
           <a href={props.location.smsURL}>(sms)</a>
         </label>
       </div>
+      
+      <ViewPhoto id={props.id} alt={props.name} />
 
       <div className="btn-group">
         <button
@@ -112,7 +114,7 @@ function Todo(props) {
         <WebcamCapture id={props.id} photoedTask={props.photoedTask} />
 
         {/* View Photo popup */}
-        <Popup
+        {/* <Popup
           trigger={
             <button type="button" className="btn">
               {" "}
@@ -124,7 +126,7 @@ function Todo(props) {
           <div>
             <ViewPhoto id={props.id} alt={props.name} />
           </div>
-        </Popup>
+        </Popup> */}
 
         <button
           type="button"
