@@ -17,43 +17,42 @@ const WebcamCapture = (props) => {
   const [imgSrc, setImgSrc] = useState(null);
   const [imgId, setImgId] = useState(null);
   const [photoSave, setPhotoSave] = useState(false);
+  const [photoTaken, setPhotoTaken] = useState(false); // Track whether a photo has been taken
 
   useEffect(() => {
     if (photoSave) {
-      console.log("useEffect detected photoSave");
       props.photoedTask(imgId);
+      setPhotoTaken(true); // Set photoTaken to true after saving photo
       setPhotoSave(false);
     }
-  });
+  }, [photoSave, props, imgId]);
 
-  console.log("WebCamCapture", props.id);
   const capture = useCallback(
     (id) => {
       const imageSrc = webcamRef.current.getScreenshot();
       setImgSrc(imageSrc);
-      console.log("capture", imageSrc.length, id);
+      setPhotoTaken(true); // Set photoTaken to true after capturing a photo
     },
     [webcamRef, setImgSrc]
   );
 
-  const savePhoto = (id, imgSrc) => {
-    console.log("savePhoto", imgSrc.length, id);
+  const savePhoto = (id, imgSrc, close) => {
     addPhoto(id, imgSrc);
     setImgId(id);
     setPhotoSave(true);
+    close();
   };
 
-  const cancelPhoto = (id, imgSrc, close) => {
-    if (imgSrc) {
-      //console.log("cancelPhoto", imgSrc.length, id);
-      // Photo has been taken, discard it
-      setImgSrc(null);
-      setPhotoSave(false); // Reset the photo save status
-    } else {
-      // No photo taken, handle as needed (e.g., show a message)
-      console.log("No photo taken yet.");
-      close();
-    }
+  const cancelPhoto = (close) => {
+    setImgSrc(null);
+    setPhotoTaken(false); // Reset photoTaken state when canceling the photo
+    close(); // Close the popup
+  };
+
+  const retakePhoto = (id) => {
+    setImgSrc(null);
+    setPhotoTaken(false); // Reset photoTaken state when retaking the photo
+    capture(id)
   };
 
   return (
@@ -67,6 +66,7 @@ const WebcamCapture = (props) => {
           </button>
         }
         modal
+        onClose={() => cancelPhoto()}
       >
         {(close) => (
           <div>
@@ -79,7 +79,7 @@ const WebcamCapture = (props) => {
             )}
             {imgSrc && <img src={imgSrc} />}
             <div className="btn-group">
-              {!imgSrc && (
+              {!photoTaken && (
                 <button
                   type="button"
                   className="btn"
@@ -88,11 +88,20 @@ const WebcamCapture = (props) => {
                   Capture photo
                 </button>
               )}
-              {imgSrc && (
+              {photoTaken && (
                 <button
                   type="button"
                   className="btn"
-                  onClick={() => savePhoto(props.id, imgSrc)}
+                  onClick={() => capture(props.id)}
+                >
+                  Retake Photo
+                </button>
+              )}
+              {photoTaken && (
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => savePhoto(props.id, imgSrc, close)}
                 >
                   Save Photo
                 </button>
@@ -100,9 +109,7 @@ const WebcamCapture = (props) => {
               <button
                 type="button"
                 className="btn todo-cancel"
-                onClick={() => {
-                  cancelPhoto(props.id, imgSrc, close);
-                }}
+                onClick={() => cancelPhoto(close)}
               >
                 Cancel
               </button>
@@ -113,6 +120,7 @@ const WebcamCapture = (props) => {
     </>
   );
 };
+
 
 const ViewPhoto = (props) => {
   const photoSrc = GetPhotoSrc(props.id);
