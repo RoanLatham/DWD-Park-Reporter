@@ -12,7 +12,7 @@ async function addPhoto(id, imgSrc) {
   try {
     // Add the new photo with id used as key for todo array in localStoarge
     // to avoid having a second pk for one todo item
-    const i = await db.photos.add({
+    const i = await db.photos.put({
       id: id,
       imgSrc: imgSrc,
     });
@@ -27,6 +27,16 @@ async function addPhoto(id, imgSrc) {
       </p>
     </>
   );
+}
+
+export async function deletePhoto(id) {
+  console.log("deletePhoto", id);
+  try {
+    await db.photos.delete(id);
+    console.log(`Photo with ID ${id} successfully deleted.`);
+  } catch (error) {
+    console.log(`Failed to delete photo with ID ${id}: ${error}`);
+  }
 }
 
 function GetPhotoSrc(id) {

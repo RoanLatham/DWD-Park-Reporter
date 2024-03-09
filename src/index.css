@@ -115,6 +115,10 @@ body {
   margin-left: 0.8rem;
 }
 
+.btn-group > :first-child{
+  margin-left: 0px;
+}
+
 .btn-group-vertical{
   flex-direction: column;
   justify-content: space-between;
@@ -122,6 +126,10 @@ body {
 .btn-group-vertical > * {
   flex: 1 1 49%;
   margin-bottom: 0.8rem;
+}
+
+.btn-group-vertical > :last-child {
+  margin-bottom: 0; /* Remove bottom margin for the last child */
 }
 
 .label-wrapper {

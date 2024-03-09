@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 import Todo from "./components/ToDo";
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
+import { deletePhoto } from "./db.jsx"; // To read and write photos
 
 function usePrevious(value) {
   const ref = useRef();
@@ -43,6 +44,8 @@ function App(props) {
       latitude: latitude,
       longitude: longitude,
       error: "",
+      mapURL: `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`,
+      smsURL: `sms://00447700900xxxx?body=https://maps.google.com/?q=${latitude},${longitude}`,
     });
   };
   
@@ -98,6 +101,7 @@ function App(props) {
   }
 
   function deleteTask(id) {
+    deletePhoto(id)
     const remainingTasks = tasks.filter((task) => id !== task.id);
     setTasks(remainingTasks);
     //localStorage.setItem("tasks", JSON.stringify(remainingTasks));
