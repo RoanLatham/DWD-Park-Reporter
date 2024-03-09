@@ -43,53 +43,73 @@ const WebcamCapture = (props) => {
     setPhotoSave(true);
   };
 
-  const cancelPhoto = (id) => {
+  const cancelPhoto = (id, imgSrc, close) => {
     if (imgSrc) {
-    //console.log("cancelPhoto", imgSrc.length, id);
+      //console.log("cancelPhoto", imgSrc.length, id);
       // Photo has been taken, discard it
       setImgSrc(null);
       setPhotoSave(false); // Reset the photo save status
     } else {
       // No photo taken, handle as needed (e.g., show a message)
       console.log("No photo taken yet.");
+      close();
     }
-    handleClose();
   };
-    
 
   return (
     <>
-      {!imgSrc && (
-        <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
-      )}
-      {imgSrc && <img src={imgSrc} />}
-      <div className="btn-group">
-        {!imgSrc && (
-          <button
-            type="button"
-            className="btn"
-            onClick={() => capture(props.id)}
-          >
-            Capture photo
+      {/* Take Photo popup */}
+      <Popup
+        trigger={
+          <button type="button" className="btn">
+            {" "}
+            Take Photo{" "}
           </button>
+        }
+        modal
+      >
+        {(close) => (
+          <div>
+            {!imgSrc && (
+              <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+              />
+            )}
+            {imgSrc && <img src={imgSrc} />}
+            <div className="btn-group">
+              {!imgSrc && (
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => capture(props.id)}
+                >
+                  Capture photo
+                </button>
+              )}
+              {imgSrc && (
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => savePhoto(props.id, imgSrc)}
+                >
+                  Save Photo
+                </button>
+              )}
+              <button
+                type="button"
+                className="btn todo-cancel"
+                onClick={() => {
+                  cancelPhoto(props.id, imgSrc, close);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         )}
-        {imgSrc && (
-          <button
-            type="button"
-            className="btn"
-            onClick={() => savePhoto(props.id, imgSrc)}
-          >
-            Save Photo
-          </button>
-        )}
-        <button
-          type="button"
-          className="btn todo-cancel"
-          onClick={() => cancelPhoto(props.id, imgSrc)}
-        >
-          Cancel
-        </button>
-      </div>
+      </Popup>
     </>
   );
 };
@@ -106,7 +126,6 @@ const ViewPhoto = (props) => {
 };
 
 function Todo(props) {
-
   const [isEditing, setEditing] = useState(false);
 
   const [newName, setNewName] = useState("");
@@ -129,8 +148,8 @@ function Todo(props) {
       editFieldRef.current.focus();
     } else if (wasEditing && !isEditing) {
       editButtonRef.current.focus();
-    } 
-  }, [wasEditing, isEditing, isPopupOpen]);
+    }
+  }, [wasEditing, isEditing]);
 
   function handleChange(e) {
     setNewName(e.target.value);
@@ -141,7 +160,7 @@ function Todo(props) {
     props.editTask(props.id, newName);
     setNewName("");
     setEditing(false);
-  }  
+  }
 
   const editingTemplate = (
     <form className="stack-small" onSubmit={handleSubmit}>
@@ -150,19 +169,20 @@ function Todo(props) {
           New name for {props.name}
         </label>
         <input
-        id={props.id}
-        className="todo-text"
-        type="text"
-        value={newName}
-        onChange={handleChange}
-        ref={editFieldRef}
-       />
+          id={props.id}
+          className="todo-text"
+          type="text"
+          value={newName}
+          onChange={handleChange}
+          ref={editFieldRef}
+        />
       </div>
       <div className="btn-group">
         <button
           type="button"
           className="btn todo-cancel"
-          onClick={() => setEditing(false)}>
+          onClick={() => setEditing(false)}
+        >
           Cancel
           <span className="visually-hidden">renaming {props.name}</span>
         </button>
@@ -173,7 +193,7 @@ function Todo(props) {
       </div>
     </form>
   );
-  
+
   const viewTemplate = (
     <div className="stack-small">
       <div className="c-cb">
@@ -203,20 +223,7 @@ function Todo(props) {
           Edit <span className="visually-hidden">{props.name}</span>
         </button>
 
-        {/* Take Photo popup */}
-        <Popup
-          trigger={
-            <button type="button" className="btn" onClick={openPopup}>
-              {" "}
-              Take Photo{" "}
-            </button>
-          }
-          modal 
-        >
-            <div>
-              <WebcamCapture id={props.id} photoedTask={props.photoedTask}/>
-            </div>
-        </Popup>
+        <WebcamCapture id={props.id} photoedTask={props.photoedTask} />
 
         {/* View Photo popup */}
         <Popup
@@ -229,7 +236,7 @@ function Todo(props) {
           modal
         >
           <div>
-            <ViewPhoto id={props.id} alt={props.name}/>
+            <ViewPhoto id={props.id} alt={props.name} />
           </div>
         </Popup>
 
@@ -242,11 +249,9 @@ function Todo(props) {
         </button>
       </div>
     </div>
-  );  
+  );
 
   return <li className="todo">{isEditing ? editingTemplate : viewTemplate}</li>;
+}
 
-  }
-  
-  export default Todo;
-  
+export default Todo;
