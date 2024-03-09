@@ -12,12 +12,35 @@ function usePrevious(value) {
   return ref.current;
 }
 
-const WebcamCapture = (props) => {
+function WebcamCapture(props) {
   const webcamRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(null);
   const [imgId, setImgId] = useState(null);
   const [photoSave, setPhotoSave] = useState(false);
   const [photoTaken, setPhotoTaken] = useState(false); // Track whether a photo has been taken
+  const [webcams, setWebcams] = useState([]);
+  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
+
+  useEffect(() => {
+    const getWebcams = async () => {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+        setWebcams(videoDevices);
+        if (videoDevices.length > 0) {
+          setSelectedDeviceId(videoDevices[0].deviceId);
+        }
+      } catch (error) {
+        console.error('Error getting webcams:', error);
+      }
+    };
+
+    getWebcams();
+  }, []);
+
+  const handleSelectChange = (event) => {
+    setSelectedDeviceId(event.target.value);
+  };
 
   useEffect(() => {
     if (photoSave) {
@@ -70,11 +93,19 @@ const WebcamCapture = (props) => {
       >
         {(close) => (
           <div>
+            <select value={selectedDeviceId} onChange={handleSelectChange}>
+              {webcams.map((device) => (
+                <option key={device.deviceId} value={device.deviceId}>
+                  {device.label || `Camera ${webcams.indexOf(device) + 1}`}
+                </option>
+              ))}
+            </select>
             {!imgSrc && (
               <Webcam
                 audio={false}
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
+                videoConstraints={{ deviceId: selectedDeviceId }}
               />
             )}
             {imgSrc && <img src={imgSrc} />}
@@ -92,7 +123,7 @@ const WebcamCapture = (props) => {
                 <button
                   type="button"
                   className="btn"
-                  onClick={() => capture(props.id)}
+                  onClick={() => retakePhoto(props.id)}
                 >
                   Retake Photo
                 </button>
@@ -119,8 +150,7 @@ const WebcamCapture = (props) => {
       </Popup>
     </>
   );
-};
-
+}
 
 const ViewPhoto = (props) => {
   const photoSrc = GetPhotoSrc(props.id);
