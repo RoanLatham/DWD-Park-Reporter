@@ -18,6 +18,11 @@ const WebcamCapture = (props) => {
   const [imgId, setImgId] = useState(null);
   const [photoSave, setPhotoSave] = useState(false);
 
+  const handleClose = () => {
+    props.onClose(); // Call the onClose function passed as a prop from the parent component
+    console.log("Attemptign close")
+  };
+
   useEffect(() => {
     if (photoSave) {
       console.log("useEffect detected photoSave");
@@ -42,9 +47,19 @@ const WebcamCapture = (props) => {
     setPhotoSave(true);
   };
 
-  const cancelPhoto = (id, imgSrc) => {
-    console.log("cancelPhoto", imgSrc.length, id);
+  const cancelPhoto = (id) => {
+    if (imgSrc) {
+    //console.log("cancelPhoto", imgSrc.length, id);
+      // Photo has been taken, discard it
+      setImgSrc(null);
+      setPhotoSave(false); // Reset the photo save status
+    } else {
+      // No photo taken, handle as needed (e.g., show a message)
+      console.log("No photo taken yet.");
+    }
+    handleClose();
   };
+    
 
   return (
     <>
@@ -95,6 +110,17 @@ const ViewPhoto = (props) => {
 };
 
 function Todo(props) {
+  // State for closing and opening popups
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    console.log("Attemptign close 2")
+  };
 
   const [isEditing, setEditing] = useState(false);
 
@@ -118,8 +144,8 @@ function Todo(props) {
       editFieldRef.current.focus();
     } else if (wasEditing && !isEditing) {
       editButtonRef.current.focus();
-    }
-  }, [wasEditing, isEditing]);  
+    } 
+  }, [wasEditing, isEditing, isPopupOpen]);
 
   function handleChange(e) {
     setNewName(e.target.value);
@@ -176,9 +202,9 @@ function Todo(props) {
           {props.name}
           {/* &nbsp;| la {props.latitude}
           &nbsp;| lo {props.longitude} */}
-          {/* <a href={props.location.mapURL}>(map)</a>
+          <a href={props.location.mapURL}> (map)</a>
           &nbsp; | &nbsp;
-          <a href={props.location.smsURL}>(sms)</a> */}
+          <a href={props.location.smsURL}>(sms)</a>
         </label>
       </div>
 
@@ -195,16 +221,18 @@ function Todo(props) {
         {/* Take Photo popup */}
         <Popup
           trigger={
-            <button type="button" className="btn">
+            <button type="button" className="btn" onClick={openPopup}>
               {" "}
               Take Photo{" "}
             </button>
           }
-          modal
+          open={isPopupOpen}
+          onClose={closePopup}
+          modal 
         >
-          <div>
-            <WebcamCapture id={props.id} photoedTask={props.photoedTask} />
-          </div>
+            <div>
+              <WebcamCapture id={props.id} photoedTask={props.photoedTask} onClose={closePopup} />
+            </div>
         </Popup>
 
         {/* View Photo popup */}
@@ -218,7 +246,7 @@ function Todo(props) {
           modal
         >
           <div>
-            <ViewPhoto id={props.id} alt={props.name} />
+            <ViewPhoto id={props.id} alt={props.name}/>
           </div>
         </Popup>
 
