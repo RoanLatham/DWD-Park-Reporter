@@ -81,7 +81,7 @@ function WebcamCapture(props) {
   return (
     <>
       {/* Take Photo popup */}
-      <Popup
+      <Popup 
         trigger={
           <button type="button" className="btn">
             {" "}
@@ -93,15 +93,8 @@ function WebcamCapture(props) {
       >
         {(close) => (
           <div>
-            <select value={selectedDeviceId} onChange={handleSelectChange}>
-              {webcams.map((device) => (
-                <option key={device.deviceId} value={device.deviceId}>
-                  {device.label || `Camera ${webcams.indexOf(device) + 1}`}
-                </option>
-              ))}
-            </select>
             {!imgSrc && (
-              <Webcam
+              <Webcam className="Todo-Webcam"
                 audio={false}
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
@@ -109,41 +102,52 @@ function WebcamCapture(props) {
               />
             )}
             {imgSrc && <img src={imgSrc} />}
-            <div className="btn-group">
-              {!photoTaken && (
+            <div className="btn-group btn-group-vertical">
+              <div className="btn-group">
+                <select className="btn" value={selectedDeviceId} onChange={handleSelectChange}>
+                  {webcams.map((device) => (
+                    <option key={device.deviceId} value={device.deviceId}>
+                      {device.label || `Camera ${webcams.indexOf(device) + 1}`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="btn-group" style={{marginLeft: "0px"}}>
+                {!photoTaken && (
+                  <button 
+                    type="button"
+                    className="btn"
+                    onClick={() => capture(props.id)}
+                  >
+                    Capture photo
+                  </button>
+                )}
+                {photoTaken && (
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={() => retakePhoto(props.id)}
+                  >
+                    Retake Photo
+                  </button>
+                )}
+                {photoTaken && (
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={() => savePhoto(props.id, imgSrc, close)}
+                  >
+                    Save Photo
+                  </button>
+                )}
                 <button
                   type="button"
-                  className="btn"
-                  onClick={() => capture(props.id)}
+                  className="btn todo-cancel"
+                  onClick={() => cancelPhoto(close)}
                 >
-                  Capture photo
+                  Cancel
                 </button>
-              )}
-              {photoTaken && (
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => retakePhoto(props.id)}
-                >
-                  Retake Photo
-                </button>
-              )}
-              {photoTaken && (
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => savePhoto(props.id, imgSrc, close)}
-                >
-                  Save Photo
-                </button>
-              )}
-              <button
-                type="button"
-                className="btn todo-cancel"
-                onClick={() => cancelPhoto(close)}
-              >
-                Cancel
-              </button>
+              </div>
             </div>
           </div>
         )}
@@ -157,7 +161,7 @@ const ViewPhoto = (props) => {
   return (
     <>
       <div>
-        <img src={photoSrc} alt={props.name} />
+        <img className="Todo-Webcam" src={photoSrc} alt={props.name} />
       </div>
     </>
   );
