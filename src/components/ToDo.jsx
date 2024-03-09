@@ -18,11 +18,6 @@ const WebcamCapture = (props) => {
   const [imgId, setImgId] = useState(null);
   const [photoSave, setPhotoSave] = useState(false);
 
-  const handleClose = () => {
-    props.onClose(); // Call the onClose function passed as a prop from the parent component
-    console.log("Attemptign close")
-  };
-
   useEffect(() => {
     if (photoSave) {
       console.log("useEffect detected photoSave");
@@ -30,6 +25,7 @@ const WebcamCapture = (props) => {
       setPhotoSave(false);
     }
   });
+
   console.log("WebCamCapture", props.id);
   const capture = useCallback(
     (id) => {
@@ -110,17 +106,6 @@ const ViewPhoto = (props) => {
 };
 
 function Todo(props) {
-  // State for closing and opening popups
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-
-  const openPopup = () => {
-    setIsPopupOpen(true);
-  };
-
-  const closePopup = () => {
-    setIsPopupOpen(false);
-    console.log("Attemptign close 2")
-  };
 
   const [isEditing, setEditing] = useState(false);
 
@@ -226,12 +211,10 @@ function Todo(props) {
               Take Photo{" "}
             </button>
           }
-          open={isPopupOpen}
-          onClose={closePopup}
           modal 
         >
             <div>
-              <WebcamCapture id={props.id} photoedTask={props.photoedTask} onClose={closePopup} />
+              <WebcamCapture id={props.id} photoedTask={props.photoedTask}/>
             </div>
         </Popup>
 
