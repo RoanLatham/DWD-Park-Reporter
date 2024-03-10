@@ -74,11 +74,11 @@ function App(props) {
     />
   ));
 
-  function addTask(name) {
+  function addTask(title) {
     const id = "todo-" + nanoid();
     const newTask = {
       id: id,
-      name: name,
+      title: title,
       completed: false,
       location: { latitude: "##", longitude: "##", error: "##" },
     };
@@ -112,7 +112,7 @@ function App(props) {
       // if this task has the same ID as the edited task
       if (id === task.id) {
         // Copy the task and update its name
-        return { ...task, name: newName };
+        return { ...task, title: newName };
       }
       // Return the original task if it's not the edited task
       return task;
@@ -182,7 +182,7 @@ function App(props) {
   .map((task) => (
     <Todo
       id={task.id}
-      name={task.name}
+      title={task.title}
       completed={task.completed}
       key={task.id}
       // latitude={task.location.latitude}

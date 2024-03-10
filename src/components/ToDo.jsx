@@ -52,7 +52,7 @@ function Todo(props) {
     <form className="stack-small" onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="todo-label" htmlFor={props.id}>
-          New name for {props.name}
+          New name for {props.title}
         </label>
         <input
           id={props.id}
@@ -70,11 +70,18 @@ function Todo(props) {
           onClick={() => setEditing(false)}
         >
           Cancel
-          <span className="visually-hidden">renaming {props.name}</span>
+          <span className="visually-hidden">renaming {props.title}</span>
         </button>
         <button type="submit" className="btn btn__primary todo-edit">
           Save
-          <span className="visually-hidden">new name for {props.name}</span>
+          <span className="visually-hidden">new name for {props.title}</span>
+        </button>
+        <button
+          type="button"
+          className="btn btn__danger"
+          onClick={() => props.deleteTask(props.id)}
+        >
+          Delete post<span className="visually-hidden">{props.title}</span>
         </button>
       </div>
     </form>
@@ -90,7 +97,7 @@ function Todo(props) {
           onChange={() => props.toggleTaskCompleted(props.id)}
         />
         <label className="todo-label" htmlFor={props.id}>
-          {props.name}
+          {props.title}
           {/* &nbsp;| la {props.latitude}
           &nbsp;| lo {props.longitude} */}
           <a href={props.location.mapURL}> (map)</a>
@@ -99,16 +106,16 @@ function Todo(props) {
         </label>
       </div>
       
-      <ViewPhoto id={props.id} alt={props.name} />
+      <ViewPhoto id={props.id} alt={props.title} />
 
-      <div className="btn-group">
+      <div className="btn-group btn-group-vertical">
         <button
           type="button"
           className="btn"
           onClick={() => setEditing(true)}
           ref={editButtonRef}
         >
-          Edit <span className="visually-hidden">{props.name}</span>
+          Edit <span className="visually-hidden">{props.title}</span>
         </button>
 
         <WebcamCapture id={props.id} photoedTask={props.photoedTask} />
@@ -124,17 +131,9 @@ function Todo(props) {
           modal
         >
           <div>
-            <ViewPhoto id={props.id} alt={props.name} />
+            <ViewPhoto id={props.id} alt={props.title} />
           </div>
         </Popup> */}
-
-        <button
-          type="button"
-          className="btn btn__danger"
-          onClick={() => props.deleteTask(props.id)}
-        >
-          Delete <span className="visually-hidden">{props.name}</span>
-        </button>
       </div>
     </div>
   );
