@@ -1,14 +1,17 @@
 :root {
-  --pr-background-color: #090c12;
+  --pr-background-color: #EBEFF2;
   /* --pr-dark-grey: #1d2331;
   --pr-medium-grey: #374052;
   --pr-light-grey: #1d2331; */
+  /* --pr-primary-color: #96F2A1;
+  --pr-accent-color: #96F2DF; */
+
   --pr-primary-color: #96F2A1;
   --pr-accent-color: #96F2DF;
 
-  --pr-dark-grey: #7683a0;
-  --pr-medium-grey: #b0bbcf;
-  --pr-light-grey: #a9b2c6;
+  --pr-light-grey: #e7ede7;
+  --pr-medium-grey: #d6dfdc;
+  --pr-dark-grey: #c7cfe0;
 }
 *{
   color: #090c12;
@@ -73,7 +76,7 @@ h1{
 
 .park-reporter-app{
   margin-top: 4rem;
-  background-color: var(--pr-dark-grey);
+  background-color: var(--pr-light-grey);
   padding: 3rem;
   border-radius: 40px;
   box-shadow:
@@ -90,8 +93,9 @@ h1{
   margin: 0 0.5rem;
 }
 
+.pr-container,
 .pr-post-container{
-  margin-top: 4rem;
+  margin-bottom: 3rem;
   background-color: var(--pr-medium-grey);
   padding: 3rem;
   border-radius: 40px;
@@ -100,6 +104,18 @@ h1{
   0 2.5rem 5rem 0 rgb(0 0 0 / 10%);
 }
 
+.pr-container{
+  background-color: var(--pr-dark-grey);
+}
+
 button{
   border-radius: 10000000px;
+}
+
+img{
+  border-radius: 40px;
+}
+
+input{
+  border-radius: 10px;
 }

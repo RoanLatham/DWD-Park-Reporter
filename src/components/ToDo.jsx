@@ -14,7 +14,7 @@ function usePrevious(value) {
 function Todo(props) {
   const [isEditing, setEditing] = useState(false);
 
-  const [newName, setNewName] = useState("");
+  const [newTitle, setNewTitle] = useState("");
 
   const editFieldRef = useRef(null);
   const editButtonRef = useRef(null);
@@ -38,13 +38,13 @@ function Todo(props) {
   }, [wasEditing, isEditing]);
 
   function handleChange(e) {
-    setNewName(e.target.value);
+    setNewTitle(e.target.value);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.editTask(props.id, newName);
-    setNewName("");
+    props.editTask(props.id, newTitle);
+    setNewTitle("");
     setEditing(false);
   }
 
@@ -67,79 +67,81 @@ function Todo(props) {
   );
 
   const editingTemplate = (
-    <form className="stack-small" onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label className="todo-label" htmlFor={props.id}>
-          New name for {props.title}
-        </label>
-        <input
-          id={props.id}
-          className="todo-text"
-          type="text"
-          value={newName}
-          onChange={handleChange}
-          ref={editFieldRef}
-        />
-      </div>
-      {props.photo ? <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={changePhotoButton} /> :
-        <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={takePhotoButton} />
-      }
-      <div className="btn-group">
-        <button
-          type="button"
-          className="btn todo-cancel"
-          onClick={() => setEditing(false)}
-        >
-          Cancel
-          <span className="visually-hidden">renaming {props.title}</span>
-        </button>
-        <button type="submit" className="btn btn__primary todo-edit">
-          Save
-          <span className="visually-hidden">new name for {props.title}</span>
-        </button>
-        <button
-          type="button"
-          className="btn btn__danger"
-          onClick={() => props.deleteTask(props.id)}
-        >
-          Delete post<span className="visually-hidden">{props.title}</span>
-        </button>
-      </div>
-    </form>
+    <div className="pr-post-container">
+      <form className="stack-small" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <input
+            id={props.id}
+            className="todo-text"
+            type="text"
+            value={newTitle}
+            onChange={handleChange}
+            ref={editFieldRef}
+            placeholder={props.title}
+          />
+        </div>
+        {props.photo ? <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={changePhotoButton} /> :
+          <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={takePhotoButton} />
+        }
+        <div className="btn-group">
+          <button
+            type="button"
+            className="btn todo-cancel"
+            onClick={() => setEditing(false)}
+          >
+            Cancel
+            <span className="visually-hidden">renaming {props.title}</span>
+          </button>
+          <button type="submit" className="btn btn__primary todo-edit">
+            Save
+            <span className="visually-hidden">new name for {props.title}</span>
+          </button>
+          <button
+            type="button"
+            className="btn btn__danger"
+            onClick={() => props.deleteTask(props.id)}
+          >
+            Delete post<span className="visually-hidden">{props.title}</span>
+          </button>
+        </div>
+      </form>
+    </div>
   );
 
   const viewTemplate = (
-    <div className="stack-small">
-        <h3 className="todo-label" htmlFor={props.id}>
-          {props.title}
-        </h3>
+    <div className="pr-post-container">
+      <div className="stack-small">
+          <h3 className="todo-label" htmlFor={props.id}>
+            {props.title}
+          </h3>
+
+          <p>
+          {props.description}
+          </p>
+        
+        <ViewPhoto id={props.id} alt={props.title} />
 
         <p>
-        {props.description}
+            {/* &nbsp;| la {props.latitude}
+            &nbsp;| lo {props.longitude} */}
+            <a href={props.location.mapURL}> (map)</a>
+            &nbsp; | &nbsp;
+            <a href={props.location.smsURL}>(sms)</a>
         </p>
-      
-      <ViewPhoto id={props.id} alt={props.title} />
 
-      <p>
-          {/* &nbsp;| la {props.latitude}
-          &nbsp;| lo {props.longitude} */}
-          <a href={props.location.mapURL}> (map)</a>
-          &nbsp; | &nbsp;
-          <a href={props.location.smsURL}>(sms)</a>
-      </p>
-
-      <div className="btn-group btn-group-vertical">
-        <button
-          type="button"
-          className="btn"
-          onClick={() => setEditing(true)}
-          ref={editButtonRef}
-        >
-          Edit <span className="visually-hidden">{props.title}</span>
-        </button>
-        
+        <div className="btn-group btn-group-vertical">
+          <button
+            type="button"
+            className="btn"
+            onClick={() => setEditing(true)}
+            ref={editButtonRef}
+          >
+            Edit <span className="visually-hidden">{props.title}</span>
+          </button>
+          
 
 
+        </div>
       </div>
     </div>
   );

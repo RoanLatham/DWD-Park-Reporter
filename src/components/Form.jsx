@@ -49,7 +49,7 @@ function Form(props) {
   }
 
   return (
-    <div className="pr-post-container">
+    <div className="pr-container">
       <form onSubmit={handleSubmit}>
         <h3>Create a new post:</h3>
         <input
