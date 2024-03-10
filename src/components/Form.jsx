@@ -49,36 +49,38 @@ function Form(props) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Create a new post:</h3>
-      <input
-        type="text"
-        id="park-watch-title-input"
-        className="input input__lg"
-        name="title"
-        placeholder="Enter Title"
-        autoComplete="off"
-        value={title}
-        onChange={handleTitleChange}
-      />
-      {titleError && <p className="pr-vallidation-message">{titleError}</p>}
+    <div className="pr-post-container">
+      <form onSubmit={handleSubmit}>
+        <h3>Create a new post:</h3>
+        <input
+          type="text"
+          id="park-watch-title-input"
+          className="input input__lg"
+          name="title"
+          placeholder="Enter Title"
+          autoComplete="off"
+          value={title}
+          onChange={handleTitleChange}
+        />
+        {titleError && <p className="pr-vallidation-message">{titleError}</p>}
 
-      <input
-        type="text"
-        id="park-watch-description-input"
-        className="input input__lg"
-        name="description"
-        placeholder="Enter description"
-        autoComplete="off"
-        value={description}
-        onChange={handleDescriptionChange}
-      />
-      {descriptionError && <p className="pr-vallidation-message">{descriptionError}</p>}
+        <input
+          type="text"
+          id="park-watch-description-input"
+          className="input input__lg"
+          name="description"
+          placeholder="Enter description"
+          autoComplete="off"
+          value={description}
+          onChange={handleDescriptionChange}
+        />
+        {descriptionError && <p className="pr-vallidation-message">{descriptionError}</p>}
 
-      <button type="submit" className="btn btn__primary btn__lg">
-        Add
-      </button>
-    </form>
+        <button type="submit" className="btn btn__primary btn__lg">
+          Add
+        </button>
+      </form>
+    </div>
   );
 }
 

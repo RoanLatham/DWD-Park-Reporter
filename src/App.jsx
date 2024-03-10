@@ -215,7 +215,7 @@ function App(props) {
   return (
     <div className="park-reporter-app">
       <div className="pr-title-container">
-      <h1 style={{ color: "var(--pr-primary-color)" }}>Park </h1> <h1 style={{ color: "var(--pr-accent-color)" }}>Reporter</h1>
+        <h1 style={{ color: "var(--pr-primary-color)" }}>Park </h1> <h1 style={{ color: "var(--pr-accent-color)" }}> Reporter</h1>
       </div>
       <Form addTask={addTask} geoFindMe={geoFindMe}/>
       <div className="filters btn-group stack-exception">
