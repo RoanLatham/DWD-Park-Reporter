@@ -4,6 +4,7 @@ import Todo from "./components/ToDo";
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import { deletePhoto } from "./db.jsx"; // To read and write photos
+import './park-reporter-dark.css';
 
 function usePrevious(value) {
   const ref = useRef();
@@ -74,11 +75,12 @@ function App(props) {
     />
   ));
 
-  function addTask(title) {
+  function addTask(title, description) {
     const id = "todo-" + nanoid();
     const newTask = {
       id: id,
       title: title,
+      description: description,
       completed: false,
       location: { latitude: "##", longitude: "##", error: "##" },
     };
@@ -86,19 +88,19 @@ function App(props) {
     setTasks([...tasks, newTask]);
   }
 
-  function toggleTaskCompleted(id) {
-    const updatedTasks = tasks.map((task) => {
-      // if this task has the same ID as the edited task
-      if (id === task.id) {
-        // use object spread to make a new object
-        // whose `completed` prop has been inverted
-        return { ...task, completed: !task.completed };
-      }
-      return task;
-    });
-    setTasks(updatedTasks);
-    //localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-  }
+  // function toggleTaskCompleted(id) {
+  //   const updatedTasks = tasks.map((task) => {
+  //     // if this task has the same ID as the edited task
+  //     if (id === task.id) {
+  //       // use object spread to make a new object
+  //       // whose `completed` prop has been inverted
+  //       return { ...task, completed: !task.completed };
+  //     }
+  //     return task;
+  //   });
+  //   setTasks(updatedTasks);
+  //   //localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  // }
 
   function deleteTask(id) {
     deletePhoto(id)
@@ -183,13 +185,15 @@ function App(props) {
     <Todo
       id={task.id}
       title={task.title}
+      description={task.description}
       completed={task.completed}
       key={task.id}
       // latitude={task.location.latitude}
       // longitude={task.location.longitude}
       location={task.location} 
-      toggleTaskCompleted={toggleTaskCompleted}
+      // toggleTaskCompleted={toggleTaskCompleted}
       photoedTask={photoedTask}
+      photo={task.photo}
       deleteTask={deleteTask}
       editTask={editTask}
     />
@@ -209,8 +213,10 @@ function App(props) {
   }, [tasks.length, prevTaskLength]);  
 
   return (
-    <div className="todoapp stack-large">
-      <h1>TodoMatic</h1>
+    <div className="park-reporter-app">
+      <div className="pr-title-container">
+      <h1 style={{ color: "var(--pr-primary-color)" }}>Park </h1> <h1 style={{ color: "var(--pr-accent-color)" }}>Reporter</h1>
+      </div>
       <Form addTask={addTask} geoFindMe={geoFindMe}/>
       <div className="filters btn-group stack-exception">
        {filterList}

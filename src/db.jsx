@@ -52,7 +52,7 @@ function GetPhotoSrc(id) {
       return img[0].imgSrc;
     } else {
       // Case for when no image exists in db yet
-      console.error(`No image found for ID ${id}`);
+      console.warn(`No image found for ID ${id}`);
       return null; 
     }
   } catch (error) {

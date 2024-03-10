@@ -1,7 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import './index.css'
+import './base.css'
+import './park-reporter-dark.css';
 
 // const DATA = [
 //   { id: "todo-0", name: "Data Test", completed: true, location: { latitude: "##", longitude: "##", error: "##" },},

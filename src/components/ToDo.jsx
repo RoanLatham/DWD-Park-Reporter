@@ -48,6 +48,24 @@ function Todo(props) {
     setEditing(false);
   }
 
+  const takePhotoButton = (
+    <div className="btn-group">
+      <button type="button" className="btn">
+        {" "}
+        Add Photo{" "}
+      </button>
+    </div>
+  );
+
+  const changePhotoButton = (
+    <button type="button" className="btn, pr-change-photo-button">
+      <ViewPhoto id={props.id} alt={props.title} />
+      <div className="overlay">
+        <div className="btn" >Change Photo</div>
+        </div>
+    </button>
+  );
+
   const editingTemplate = (
     <form className="stack-small" onSubmit={handleSubmit}>
       <div className="form-group">
@@ -63,6 +81,9 @@ function Todo(props) {
           ref={editFieldRef}
         />
       </div>
+      {props.photo ? <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={changePhotoButton} /> :
+        <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={takePhotoButton} />
+      }
       <div className="btn-group">
         <button
           type="button"
@@ -89,24 +110,23 @@ function Todo(props) {
 
   const viewTemplate = (
     <div className="stack-small">
-      <div className="c-cb">
-        <input
-          id={props.id}
-          type="checkbox"
-          defaultChecked={props.completed}
-          onChange={() => props.toggleTaskCompleted(props.id)}
-        />
-        <label className="todo-label" htmlFor={props.id}>
+        <h3 className="todo-label" htmlFor={props.id}>
           {props.title}
+        </h3>
+
+        <p>
+        {props.description}
+        </p>
+      
+      <ViewPhoto id={props.id} alt={props.title} />
+
+      <p>
           {/* &nbsp;| la {props.latitude}
           &nbsp;| lo {props.longitude} */}
           <a href={props.location.mapURL}> (map)</a>
           &nbsp; | &nbsp;
           <a href={props.location.smsURL}>(sms)</a>
-        </label>
-      </div>
-      
-      <ViewPhoto id={props.id} alt={props.title} />
+      </p>
 
       <div className="btn-group btn-group-vertical">
         <button
@@ -117,23 +137,9 @@ function Todo(props) {
         >
           Edit <span className="visually-hidden">{props.title}</span>
         </button>
+        
 
-        <WebcamCapture id={props.id} photoedTask={props.photoedTask} />
 
-        {/* View Photo popup */}
-        {/* <Popup
-          trigger={
-            <button type="button" className="btn">
-              {" "}
-              View Photo{" "}
-            </button>
-          }
-          modal
-        >
-          <div>
-            <ViewPhoto id={props.id} alt={props.title} />
-          </div>
-        </Popup> */}
       </div>
     </div>
   );

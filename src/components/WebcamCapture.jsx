@@ -73,12 +73,7 @@ export function WebcamCapture(props) {
       <>
         {/* Take Photo popup */}
         <Popup 
-          trigger={
-            <button type="button" className="btn">
-              {" "}
-              Take Photo{" "}
-            </button>
-          }
+          trigger={props.takePhotoButton}
           modal
           onClose={() => cancelPhoto()}
         >
