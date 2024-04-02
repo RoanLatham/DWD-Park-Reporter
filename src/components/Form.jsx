@@ -18,6 +18,7 @@ function Form(props) {
   function handleSubmit(event) {
     event.preventDefault();
     
+    //input validaiton
     let titleErrorText = "";
     let descriptionErrorText = "";
   
@@ -62,6 +63,7 @@ function Form(props) {
           value={title}
           onChange={handleTitleChange}
         />
+        {/* If titleError is true / does exits, displayt input vlaidaion message */}
         {titleError && <p className="pr-vallidation-message">{titleError}</p>}
 
         <input
@@ -74,6 +76,7 @@ function Form(props) {
           value={description}
           onChange={handleDescriptionChange}
         />
+        {/* If descriptionError is true / does exits, displayt input vlaidaion message */}
         {descriptionError && <p className="pr-vallidation-message">{descriptionError}</p>}
 
         <button type="submit" className="btn btn__primary btn__lg">

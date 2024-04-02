@@ -12,15 +12,22 @@ function usePrevious(value) {
 }
 
 function Todo(props) {
+  // Editing state for switichg to editiing template
   const [isEditing, setEditing] = useState(false);
 
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
 
+  // Referance to edit tampleate title input for keyboard focus
   const editTitleFieldRef = useRef(null);
+  // Referance to View template edit button for keyboard focus
   const editButtonRef = useRef(null);
 
   const wasEditing = usePrevious(isEditing);
+
+  //States for Input validation on edit template
+  const [titleError, setTitleError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
 
   function usePrevious(value) {
     const ref = useRef();
@@ -47,10 +54,39 @@ function Todo(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.editTask(props.id, newTitle, newDescription);
+      
+    //input validaiton
+    let titleErrorText = "";
+    let descriptionErrorText = "";
+  
+    if (!newTitle.trim()) {
+      titleErrorText = "You must enter a title";
+    }
+  
+    if (!newDescription.trim()) {
+      descriptionErrorText = "You must enter a description";
+    }
+    
+    setTitleError(titleErrorText);
+    setDescriptionError(descriptionErrorText);
+  
+    if (!titleErrorText && !descriptionErrorText) {
+      // If both fields are not empty, proceed with editing the task
+      props.editTask(props.id, newTitle, newDescription);
+      setNewTitle("");
+      setNewDescription("");
+      setTitleError("");
+      setDescriptionError("");
+      setEditing(false);
+    }
+  }
+
+  function handleCancel(){
+    setEditing(false);
     setNewTitle("");
     setNewDescription("");
-    setEditing(false);
+    setTitleError("");
+    setDescriptionError("");
   }
 
   const takePhotoButton = (
@@ -75,6 +111,7 @@ function Todo(props) {
     <div className="pr-post-container">
       <form className="stack-small" onSubmit={handleSubmit}>
         <div className="form-group">
+          {/* Title Input */}
           <input
             id={props.id}
             className="todo-text"
@@ -84,6 +121,10 @@ function Todo(props) {
             ref={editTitleFieldRef}
             placeholder={`Change post title (${props.title})`}
           />
+          {/* If titleError is true / does exits, displayt input vlaidaion message */}
+          {titleError && <p className="pr-vallidation-message">{titleError}</p>}
+
+          {/* Description Input */}
           <input
             id={props.id}
             className="todo-text"
@@ -92,6 +133,9 @@ function Todo(props) {
             onChange={handleDescriptionChange}
             placeholder={`Change post description (${props.title})`}
           />
+          {/* If descriptionError is true / does exits, displayt input vlaidaion message */}
+          {descriptionError && <p className="pr-vallidation-message">{descriptionError}</p>}
+
         </div>
         {props.photo ? <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={changePhotoButton} /> :
           <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={takePhotoButton} />
@@ -100,7 +144,7 @@ function Todo(props) {
           <button
             type="button"
             className="btn todo-cancel"
-            onClick={() => setEditing(false)}
+            onClick={handleCancel}
           >
             Cancel
             <span className="visually-hidden">editing {props.title}</span>
