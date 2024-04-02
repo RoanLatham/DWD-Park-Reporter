@@ -200,7 +200,6 @@ function App(props) {
   ));
 
   const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
-  const headingText = `${taskList.length} ${tasksNoun} remaining`;
 
   const listHeadingRef = useRef(null);
 
@@ -221,9 +220,7 @@ function App(props) {
       <div className="filters btn-group stack-exception pr-container">
        {filterList}
       </div>
-      <h2 id="list-heading" tabIndex="-1" ref={listHeadingRef}>
-        {headingText}
-      </h2>
+      <div className="pr-title-container pr-container"> <h2>Posts</h2></div>
       <ul
         role="list"
         className="todo-list stack-large stack-exception"
