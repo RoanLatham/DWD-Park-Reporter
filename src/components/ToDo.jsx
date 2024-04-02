@@ -15,6 +15,7 @@ function Todo(props) {
   const [isEditing, setEditing] = useState(false);
 
   const [newTitle, setNewTitle] = useState("");
+  const [newDescription, setNewDescription] = useState("");
 
   const editTitleFieldRef = useRef(null);
   const editButtonRef = useRef(null);
@@ -37,14 +38,18 @@ function Todo(props) {
     }
   }, [wasEditing, isEditing]);
 
-  function handleChange(e) {
+  function handleTitleChange(e) {
     setNewTitle(e.target.value);
+  }
+  function handleDescriptionChange(e) {
+    setNewDescription(e.target.value);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.editTask(props.id, newTitle);
+    props.editTask(props.id, newTitle, newDescription);
     setNewTitle("");
+    setNewDescription("");
     setEditing(false);
   }
 
@@ -75,19 +80,18 @@ function Todo(props) {
             className="todo-text"
             type="text"
             value={newTitle}
-            onChange={handleChange}
+            onChange={handleTitleChange}
             ref={editTitleFieldRef}
             placeholder={`Change post title (${props.title})`}
           />
-          {/* <input
+          <input
             id={props.id}
             className="todo-text"
             type="text"
             value={newDescription}
-            onChange={handleChange}
-            ref={editDescriptionFieldRef}
+            onChange={handleDescriptionChange}
             placeholder={`Change post description (${props.title})`}
-          /> */}
+          />
         </div>
         {props.photo ? <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={changePhotoButton} /> :
           <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={takePhotoButton} />
@@ -145,6 +149,7 @@ function Todo(props) {
             onClick={() => {
               setEditing(true); // Toggle isEditing state
               setNewTitle(props.title); // Set newTitle with props.title, so the input feield is pre-populated with the old title
+              setNewDescription(props.description); // Set newDescription with props.desciption, so the input feield is pre-populated with the old title
             }}
             ref={editButtonRef}
           >

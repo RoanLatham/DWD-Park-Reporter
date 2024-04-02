@@ -75,7 +75,7 @@ body {
 /* Global styles */
 .form-group > input[type="text"] {
   display: inline-block;
-  margin-top: 0.4rem;
+  margin-top: 1.5rem;
 }
 .btn {
   border: 0.2rem solid #4d4d4d;
