@@ -16,7 +16,7 @@ function Todo(props) {
 
   const [newTitle, setNewTitle] = useState("");
 
-  const editFieldRef = useRef(null);
+  const editTitleFieldRef = useRef(null);
   const editButtonRef = useRef(null);
 
   const wasEditing = usePrevious(isEditing);
@@ -31,7 +31,7 @@ function Todo(props) {
 
   useEffect(() => {
     if (!wasEditing && isEditing) {
-      editFieldRef.current.focus();
+      editTitleFieldRef.current.focus();
     } else if (wasEditing && !isEditing) {
       editButtonRef.current.focus();
     }
@@ -76,9 +76,18 @@ function Todo(props) {
             type="text"
             value={newTitle}
             onChange={handleChange}
-            ref={editFieldRef}
-            placeholder={props.title}
+            ref={editTitleFieldRef}
+            placeholder={`Change post title (${props.title})`}
           />
+          {/* <input
+            id={props.id}
+            className="todo-text"
+            type="text"
+            value={newDescription}
+            onChange={handleChange}
+            ref={editDescriptionFieldRef}
+            placeholder={`Change post description (${props.title})`}
+          /> */}
         </div>
         {props.photo ? <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={changePhotoButton} /> :
           <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={takePhotoButton} />
@@ -90,11 +99,11 @@ function Todo(props) {
             onClick={() => setEditing(false)}
           >
             Cancel
-            <span className="visually-hidden">renaming {props.title}</span>
+            <span className="visually-hidden">editing {props.title}</span>
           </button>
           <button type="submit" className="btn btn__primary todo-edit">
             Save
-            <span className="visually-hidden">new name for {props.title}</span>
+            <span className="visually-hidden">edits to {props.title}</span>
           </button>
           <button
             type="button"
@@ -133,7 +142,10 @@ function Todo(props) {
           <button
             type="button"
             className="btn"
-            onClick={() => setEditing(true)}
+            onClick={() => {
+              setEditing(true); // Toggle isEditing state
+              setNewTitle(props.title); // Set newTitle with props.title, so the input feield is pre-populated with the old title
+            }}
             ref={editButtonRef}
           >
             Edit <span className="visually-hidden">{props.title}</span>

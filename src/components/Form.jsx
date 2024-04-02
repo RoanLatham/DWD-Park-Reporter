@@ -55,7 +55,7 @@ function Form(props) {
         <input
           type="text"
           id="park-watch-title-input"
-          className="input input__lg"
+          className="input input__lg pr-post-input"
           name="title"
           placeholder="Enter Title"
           autoComplete="off"
@@ -67,7 +67,7 @@ function Form(props) {
         <input
           type="text"
           id="park-watch-description-input"
-          className="input input__lg"
+          className="input input__lg pr-post-input"
           name="description"
           placeholder="Enter description"
           autoComplete="off"

@@ -1,10 +1,11 @@
+
 import { useState, useRef, useEffect } from "react";
 import { nanoid } from "nanoid";
 import Todo from "./components/ToDo";
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import { deletePhoto } from "./db.jsx"; // To read and write photos
-import './park-reporter-dark.css';
+
 
 function usePrevious(value) {
   const ref = useRef();
@@ -199,22 +200,11 @@ function App(props) {
     />
   ));
 
-  const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
-
-  const listHeadingRef = useRef(null);
-
-  const prevTaskLength = usePrevious(tasks.length);
-
-  useEffect(() => {
-    if (tasks.length < prevTaskLength) {
-      listHeadingRef.current.focus();
-    }
-  }, [tasks.length, prevTaskLength]);  
-
   return (
     <div className="park-reporter-app">
       <div className="pr-title-container pr-container">
-        <h1 style={{ color: "var(--pr-primary-color)" }}>Park </h1> <h1 style={{ color: "var(--pr-accent-color)" }}> Reporter</h1>
+        {/* <h1 style={{ color: "var(--pr-primary-color)" }}>Park </h1> <h1 style={{ color: "var(--pr-accent-color)" }}> Reporter</h1> */}
+        <h1>Park Reporter</h1>
       </div>
       <Form addTask={addTask} geoFindMe={geoFindMe}/>
       <div className="filters btn-group stack-exception pr-container">

@@ -5,13 +5,15 @@
   --pr-light-grey: #1d2331; */
   /* --pr-primary-color: #96F2A1;
   --pr-accent-color: #96F2DF; */
-
+/* 
   --pr-primary-color: #96F2A1;
-  --pr-accent-color: #96F2DF;
+  --pr-accent-color: #96F2DF; */
 
-  --pr-light-grey: #e7ede7;
-  --pr-medium-grey: #d6dfdc;
-  --pr-dark-grey: #c7cfe0;
+  --pr-app-container-background: #f0f9f6;
+  --pr-medium-grey: #ffffff;
+  --pr-dark-grey: #ffffff;
+
+  --pr-primary-color: #c2e7ff;
 }
 *{
   color: #090c12;
@@ -39,6 +41,12 @@ h1{
 
 .btn-group-vertical > :last-child {
   margin-bottom: 0; /* Remove bottom margin for the last child */
+}
+
+.btn__primary{
+  background-color: var(--pr-primary-color);
+  color: #090c12;
+  border-color: #00000000;
 }
 
 .Todo-Webcam{
@@ -76,7 +84,7 @@ h1{
 
 .park-reporter-app{
   margin-top: 4rem;
-  background-color: var(--pr-light-grey);
+  background-color: var(--pr-app-container-background);
   padding: 3rem;
   border-radius: 40px;
   box-shadow:
@@ -112,10 +120,12 @@ button{
   border-radius: 10000000px;
 }
 
+video,
 img{
   border-radius: 40px;
 }
 
-input{
-  border-radius: 10px;
+input[type="text"] {
+  border-radius: 10000000px;
+
 }
