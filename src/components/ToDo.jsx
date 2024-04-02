@@ -82,6 +82,7 @@ function Todo(props) {
   }
 
   function handleCancel(){
+    // Reset all used variables so when the user edits again nothing is left over
     setEditing(false);
     setNewTitle("");
     setNewDescription("");
