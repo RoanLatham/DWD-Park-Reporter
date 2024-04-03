@@ -2,8 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './base.css'
-import './park-reporter-dark.css';
-import defaultDATA from './default-data.json';
+import './park-reporter.css'
+
 
 
 // const DATA = [
@@ -41,17 +41,52 @@ function exportToJSON(data, filename) {
   URL.revokeObjectURL(url);
 }
 
-function PopulateWithDefaultData(){
-  localStorage.setItem('tasks', JSON.parse(defaultDATA))
-  return JSON.parse(defaultDATA)
+// async function PopulateWithDefaultData() {
+//   const response = await fetch('/default-data.json');
+//   if (!response.ok) {
+//     throw new Error(`Error fetching default data!: ${response.status}`);
+//   }
+//   const defaultDATA = await response.json();
+//   localStorage.setItem('tasks', JSON.stringify(defaultDATA));
+//   return defaultDATA;
+// }
+
+
+// // Attemtp to load data from local storage, if none exists populate the browsers local storage with default data
+// const DATA = JSON.parse(localStorage.getItem('tasks')) || PopulateWithDefaultData();
+
+
+//load default dat json, save it to local sotage and also return it for use when the apps first loads
+async function PopulateWithDefaultData() {
+  const response = await fetch('/DWD-Park-Reporter/default-data.json');
+  if (!response.ok) {
+    throw new Error(`Error fetching default data!: ${response.status}`);
+  }
+  const defaultDATA = await response.json();
+  localStorage.setItem('tasks', JSON.stringify(defaultDATA));
+  return defaultDATA;
 }
 
-// Attemtp to load data from local storage, if none exists populate the browsers local storage with default data
-const DATA = JSON.parse(localStorage.getItem('tasks')) || PopulateWithDefaultData();
+// Attempt to load data from local storage, if none exists load defauld data instead and save default data to local storage
+async function loadData() {
+  let data;
+  const tasks = localStorage.getItem('tasks');
+  // If data is found in local sotrage load it, if not run the funtion to fetch and use default-data.json
+  if (tasks) {
+    data = JSON.parse(tasks);
+  } else {
+    data = await PopulateWithDefaultData();
+  }
+  return data;
+}
 
-
+// Since fetching the dafualt data is async, wait until data is loaded, either default or local storage, before loading the rest of the page
+loadData().then((DATA) => {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App tasks={DATA} exportToJSON={exportToJSON}/>
   </React.StrictMode>,
 )
+}).catch((error) => {
+  console.error("Failed to load data: ", error);
+});

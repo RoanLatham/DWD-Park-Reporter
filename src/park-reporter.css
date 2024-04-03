@@ -14,10 +14,25 @@
   --pr-dark-grey: #ffffff;
 
   --pr-primary-color: #c2e7ff;
+  --pr-primary-color-focus: #abd6f2;
+
+  /* --pr-secondary-color: #c2ffea; */
+
+  --pr-secondary-color: #cbfceb;
+  --pr-secondary-color-focus: #b6f0dc;
+  --pr-secondary-selected-color: #beece7;
+
+  --pr-danger-color: #fccbd0;
+  --pr-danger-color-focus: #e8aeb3;
 }
-*{
+
+/* change font weight but ntoi for headings */
+*:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
   color: #090c12;
 }
+
 body {
   width: 100vw;
   height: 100vh;
@@ -41,12 +56,6 @@ h1{
 
 .btn-group-vertical > :last-child {
   margin-bottom: 0; /* Remove bottom margin for the last child */
-}
-
-.btn__primary{
-  background-color: var(--pr-primary-color);
-  color: #090c12;
-  border-color: #00000000;
 }
 
 .Todo-Webcam{
@@ -86,6 +95,7 @@ h1{
   margin-top: 4rem;
   background-color: var(--pr-app-container-background);
   padding: 3rem;
+  margin-bottom: 50vh;
   border-radius: 40px;
   box-shadow:
   0 2px 4px 0 rgb(0 0 0 / 20%),
@@ -125,7 +135,83 @@ img{
   border-radius: 40px;
 }
 
+textarea,
 input[type="text"] {
   border-radius: 10000000px;
-
 }
+
+textarea{
+  resize: none;
+}
+
+.popup-content{
+  border-radius: calc(40px + 1rem);
+  padding: 1rem;
+  padding-bottom: 2rem;
+  box-shadow:
+  0 2px 4px 0 rgb(0 0 0 / 20%),
+  0 2.5rem 5rem 0 rgb(0 0 0 / 10%);
+}
+
+.btn{
+  background-color: var(--pr-secondary-color);
+  color: #090c12;
+  border-color: #00000000;
+}
+
+.btn:hover, .btn:focus {
+  background-color: var(--pr-secondary-color-focus);
+}
+
+.btn__primary{
+  background-color: var(--pr-primary-color);
+  color: #090c12;
+  border-color: #00000000;
+}
+
+.btn__primary:hover, .btn__primary:focus {
+  background-color: var(--pr-primary-color-focus);
+}
+
+
+.toggle-btn{
+  border-width: 0px;
+}
+
+.btn.toggle-btn[aria-pressed="true"] {
+  border-width: 0px;
+  background-color: var(--pr-secondary-selected-color);
+  border-color: #4d4d4d;
+  text-decoration: underline;
+}
+
+.btn__danger{
+  background-color: var(--pr-danger-color);
+}
+
+.btn__danger:hover, .btn__danger:focus {
+  background-color: var(--pr-danger-color-focus);
+}
+
+.btn_overlay,
+.pr-select{
+  border-radius: 10000000px;
+ background-color: white;
+ border: 2px solid #000;
+}
+
+#Export-Button:hover, #Export-Button:focus,
+.btn_overlay:hover, .btn_overlay:focus ,
+.pr-select:hover, .pr-select:focus {
+ background-color: #f6f6f6;
+}
+
+#Export-Button{
+  background-color: white;
+
+  border-color: black;
+}
+
+
+
+

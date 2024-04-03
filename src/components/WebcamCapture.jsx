@@ -90,10 +90,11 @@ export function WebcamCapture(props) {
               {imgSrc && <img src={imgSrc} />}
               <div className="btn-group btn-group-vertical">
                 <div className="btn-group">
-                  <select className="btn" value={selectedDeviceId} onChange={handleSelectChange}>
+                  <select className="btn pr-select" value={selectedDeviceId} onChange={handleSelectChange}>
                     {webcams.map((device) => (
+                      // List all avaible webcam deveices, adn facign modes for mobile, if the webcam has a label use that, if not construct a name using the camera id
                       <option key={device.deviceId} value={device.deviceId}>
-                        {device.label || `Camera ${webcams.indexOf(device) + 1}`}
+                        {device.label || `Camera ${webcams.indexOf(device) + 1}`} {device.facingMode}
                       </option>
                     ))}
                   </select>

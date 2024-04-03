@@ -103,7 +103,7 @@ function Todo(props) {
     <button type="button" className="btn, pr-change-photo-button">
       <ViewPhoto id={props.id} alt={props.title} />
       <div className="overlay">
-        <div className="btn" >Change Photo</div>
+        <div type = "button" className="btn btn_overlay" >Change Photo</div>
         </div>
     </button>
   );
@@ -126,7 +126,7 @@ function Todo(props) {
           {titleError && <p className="pr-vallidation-message">{titleError}</p>}
 
           {/* Description Input */}
-          <input
+          <textarea
             id={props.id}
             className="todo-text"
             type="text"
@@ -144,7 +144,7 @@ function Todo(props) {
         <div className="btn-group">
           <button
             type="button"
-            className="btn todo-cancel"
+            className="btn"
             onClick={handleCancel}
           >
             Cancel

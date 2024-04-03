@@ -48,10 +48,12 @@ textarea {
   line-height: 1.15;
   margin: 0;
 }
+textarea,
 button,
 input {
   overflow: visible;
 }
+textarea,
 input[type="text"] {
   border-radius: 0;
 }
@@ -73,6 +75,7 @@ body {
 }
 /* End resets */
 /* Global styles */
+.form-group > textarea, 
 .form-group > input[type="text"] {
   display: inline-block;
   margin-top: 1.5rem;
@@ -85,7 +88,7 @@ body {
 }
 .btn.toggle-btn {
   border-color: #d3d3d3;
-  border-width: 1px;
+  /* border-width: 1px; */
 }
 .btn.toggle-btn[aria-pressed="true"] {
   border-color: #4d4d4d;

@@ -201,23 +201,29 @@ function App(props) {
   ));
 
   return (
-    <div className="park-reporter-app">
-      <div className="pr-title-container pr-container">
-        {/* <h1 style={{ color: "var(--pr-primary-color)" }}>Park </h1> <h1 style={{ color: "var(--pr-accent-color)" }}> Reporter</h1> */}
-        <h1>Park Reporter</h1>
+    <div>
+      <div className="park-reporter-app">
+        <div className="pr-title-container pr-container">
+          {/* <h1 style={{ color: "var(--pr-primary-color)" }}>Park </h1> <h1 style={{ color: "var(--pr-accent-color)" }}> Reporter</h1> */}
+          <h1>Park Reporter 🌳</h1>
+        </div>
+        <Form addTask={addTask} geoFindMe={geoFindMe}/>
+        <div className="pr-title-container pr-container"> <h2 id="list-heading" aria-hidden="true" >Posts</h2></div>
+        <div className="filters btn-group stack-exception pr-container">
+        {filterList}
+        </div>
+         {/* Conditonal rendering, if no post are present load a containter with text stating there are no posts */}
+        {tasks.length > 0 ? 
+        <ul
+          role="list"
+          className="todo-list stack-large stack-exception"
+          aria-labelledby="list-heading">
+          {taskList}
+        </ul>
+        : 
+        <div className="pr-title-container pr-container"> <h2>No Posts, Create one above!</h2></div>}
+        <button id="Export-Button"type="button" className="btn" onClick={() => props.exportToJSON(tasks, 'Park-Reporter-Posts.json')}> Export Posts</button>
       </div>
-      <Form addTask={addTask} geoFindMe={geoFindMe}/>
-      <div className="filters btn-group stack-exception pr-container">
-       {filterList}
-      </div>
-      <div className="pr-title-container pr-container"> <h2>Posts</h2></div>
-      <ul
-        role="list"
-        className="todo-list stack-large stack-exception"
-        aria-labelledby="list-heading">
-        {taskList}
-      </ul>
-      {/* <button type="button" className="btn" onClick={props.exportToJSON(tasks, 'Park-Reporter-Posts.json')}> Export Posts</button> */}
     </div>
   );
 }
