@@ -1,0 +1,15 @@
+[
+  {
+    "id": "todo-FoXpqsx6mbfyBR_fyRdi2",
+    "title": "Default Post",
+    "description": "testing loading default posts on new host",
+    "completed": false,
+    "location": {
+      "latitude": 55.6357,
+      "longitude": -4.674,
+      "error": "",
+      "mapURL": "https://www.openstreetmap.org/#map=18/55.6357/-4.674",
+      "smsURL": "sms://00447700900xxxx?body=https://maps.google.com/?q=55.6357,-4.674"
+    }
+  }
+]

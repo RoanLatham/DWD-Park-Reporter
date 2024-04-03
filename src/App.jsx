@@ -217,6 +217,7 @@ function App(props) {
         aria-labelledby="list-heading">
         {taskList}
       </ul>
+      {/* <button type="button" className="btn" onClick={props.exportToJSON(tasks, 'Park-Reporter-Posts.json')}> Export Posts</button> */}
     </div>
   );
 }
