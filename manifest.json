@@ -8,31 +8,31 @@
     "description": "A ToDo List applicaction created for Dynaic Web Technologies",
     "icons": [
     {
-    "src": "public/Icon/TODO.svg",
+    "src": "/Icon/TODO.svg",
     "sizes": "any"
     },
     {
-    "src": "public/Icon/TODO 48px.png",
+    "src": "/Icon/TODO 48px.png",
     "sizes": "48x48",
     "type": "image/png"
     },
     {
-    "src": "public/Icon/TODO  64px.png",
+    "src": "/Icon/TODO  64px.png",
     "sizes": "64x64",
     "type": "image/png"
     },
     {
-    "src": "public/Icon/TODO 128px.png",
+    "src": "/Icon/TODO 128px.png",
     "sizes": "128x128",
     "type": "image/png"
     },
     {
-    "src": "public/Icon/TODO 256px.png",
+    "src": "/Icon/TODO 256px.png",
     "sizes": "256x256",
     "type": "image/png"
     },
     {
-    "src": "public/Icon/TODO 512px.png",
+    "src": "/Icon/TODO 512px.png",
     "sizes": "512x512",
     "type": "image/png"
     }
