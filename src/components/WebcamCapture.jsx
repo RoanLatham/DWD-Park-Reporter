@@ -80,7 +80,7 @@ export function WebcamCapture(props) {
           {(close) => (
             <div>
               {!imgSrc && (
-                <Webcam className="Todo-Webcam"
+                <Webcam className="pr-Webcam"
                   audio={false}
                   ref={webcamRef}
                   screenshotFormat="image/jpeg"
@@ -129,7 +129,7 @@ export function WebcamCapture(props) {
                   )}
                   <button
                     type="button"
-                    className="btn todo-cancel"
+                    className="btn"
                     onClick={() => cancelPhoto(close)}
                   >
                     Cancel
@@ -148,7 +148,7 @@ export function WebcamCapture(props) {
     return (
       <>
         <div>
-          <img className="Todo-Webcam" src={photoSrc} alt={props.name} />
+          <img className="pr-Webcam" src={photoSrc} alt={props.name} />
         </div>
       </>
     );

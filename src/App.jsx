@@ -1,7 +1,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { nanoid } from "nanoid";
-import Todo from "./components/ToDo";
+import PrPost from "./components/PrPost.jsx";
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import { deletePhoto } from "./db.jsx"; // To read and write photos
@@ -77,7 +77,7 @@ function App(props) {
   ));
 
   function addTask(title, description) {
-    const id = "todo-" + nanoid();
+    const id = "post-" + nanoid();
     const newTask = {
       id: id,
       title: title,
@@ -86,7 +86,7 @@ function App(props) {
       location: { latitude: "##", longitude: "##", error: "##" },
     };
     setLastInsertedId(id);
-    setTasks([...tasks, newTask]);
+    setTasks([...posts, newTask]);
   }
 
   // function toggleTaskCompleted(id) {
@@ -105,13 +105,13 @@ function App(props) {
 
   function deleteTask(id) {
     deletePhoto(id)
-    const remainingTasks = tasks.filter((task) => id !== task.id);
+    const remainingTasks = posts.filter((task) => id !== task.id);
     setTasks(remainingTasks);
     //localStorage.setItem("tasks", JSON.stringify(remainingTasks));
   }
 
   function editTask(id, newName, newDescription) {
-    const editedTaskList = tasks.map((task) => {
+    const editedTaskList = posts.map((task) => {
       // if this task has the same ID as the edited task
       if (id === task.id) {
         // Copy the task and update its name
@@ -126,8 +126,8 @@ function App(props) {
 
   function locateTask(id, location) {
     console.log("locate Task", id, " before");
-    console.log(location, tasks);
-    const locatedTaskList = tasks.map((task) => {
+    console.log(location, posts);
+    const locatedTaskList = posts.map((task) => {
       // if this task has the same ID as the edited task
       if (id === task.id) {
         //
@@ -140,14 +140,14 @@ function App(props) {
   }
    
 
-  const [tasks, setTasks] = usePersistedState('tasks', []);
+  const [posts, setTasks] = usePersistedState('tasks', []);
   //const [tasks, setTasks] = useState(props.tasks);
 
   const [lastInsertedId, setLastInsertedId] = useState("");
 
   function photoedTask(id) {
     console.log("photoedTask", id);
-    const photoedTaskList = tasks.map((task) => {
+    const photoedTaskList = posts.map((task) => {
       // if this task has the same ID as the edited task
       if (id === task.id) {
         //
@@ -159,38 +159,15 @@ function App(props) {
     setTasks(photoedTaskList);
   }
 
-  // function photoedTask(id) {
-  //   console.log("photoedTask", id);
-  
-  //   // Find the index of the task with the matching ID
-  //   const taskIndex = tasks.findIndex((task) => task.id === id);
-  
-  //   if (taskIndex !== -1) {
-  //     // Create a shallow copy of the tasks array
-  //     const updatedTasks = [...tasks];
-  
-  //     // Update the specific task's photo property
-  //     updatedTasks[taskIndex].photo = true;
-  
-  //     // Update the state with the new tasks list
-  //     setTasks(updatedTasks);
-  //   } else {
-  //     console.warn(`Task with ID ${id} not found.`);
-  //   }
-  // }
-  
-
-  const taskList = tasks
+  const postsList = posts
   .filter(FILTER_MAP[filter])
   .map((task) => (
-    <Todo
+    <PrPost
       id={task.id}
       title={task.title}
       description={task.description}
       completed={task.completed}
       key={task.id}
-      // latitude={task.location.latitude}
-      // longitude={task.location.longitude}
       location={task.location} 
       // toggleTaskCompleted={toggleTaskCompleted}
       photoedTask={photoedTask}
@@ -204,7 +181,6 @@ function App(props) {
     <div>
       <div className="park-reporter-app">
         <div className="pr-title-container pr-container">
-          {/* <h1 style={{ color: "var(--pr-primary-color)" }}>Park </h1> <h1 style={{ color: "var(--pr-accent-color)" }}> Reporter</h1> */}
           <h1>Park Reporter 🌳</h1>
         </div>
         <Form addTask={addTask} geoFindMe={geoFindMe}/>
@@ -213,16 +189,16 @@ function App(props) {
         {filterList}
         </div>
          {/* Conditonal rendering, if no post are present load a containter with text stating there are no posts */}
-        {tasks.length > 0 ? 
+        {posts.length > 0 ? 
         <ul
           role="list"
-          className="todo-list stack-large stack-exception"
+          className="stack-large stack-exception"
           aria-labelledby="list-heading">
-          {taskList}
+          {postsList}
         </ul>
         : 
         <div className="pr-title-container pr-container"> <h2>No Posts, Create one above!</h2></div>}
-        <button id="Export-Button"type="button" className="btn" onClick={() => props.exportToJSON(tasks, 'Park-Reporter-Posts.json')}> Export Posts</button>
+        <button id="Export-Button"type="button" className="btn" onClick={() => props.exportToJSON(posts, 'Park-Reporter-Posts.json')}> Export Posts</button>
       </div>
     </div>
   );

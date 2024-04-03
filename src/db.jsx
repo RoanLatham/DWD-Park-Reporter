@@ -1,7 +1,7 @@
 import Dexie from "dexie";
 import { useLiveQuery } from "dexie-react-hooks";
 
-export const db = new Dexie("todo-photos");
+export const db = new Dexie("park-reporter-photos");
 
 db.version(1).stores({
   photos: "id", // Primary key, don't index photos
@@ -10,8 +10,7 @@ db.version(1).stores({
 async function addPhoto(id, imgSrc) {
   console.log("addPhoto", imgSrc.length, id);
   try {
-    // Add the new photo with id used as key for todo array in localStoarge
-    // to avoid having a second pk for one todo item
+    // Add the new photo with the same id used as a key for posts array in localStoarge to avoid having a second pk for one post item
     const i = await db.photos.put({
       id: id,
       imgSrc: imgSrc,

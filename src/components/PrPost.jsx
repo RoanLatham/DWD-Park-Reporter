@@ -11,14 +11,15 @@ function usePrevious(value) {
   return ref.current;
 }
 
-function Todo(props) {
+function PrPost(props) {
   // Editing state for switichg to editiing template
   const [isEditing, setEditing] = useState(false);
 
+  // States for new desctiptiion and title for edit template
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
 
-  // Referance to edit tampleate title input for keyboard focus
+  // Referance to edit template title input for keyboard focus
   const editTitleFieldRef = useRef(null);
   // Referance to View template edit button for keyboard focus
   const editButtonRef = useRef(null);
@@ -115,7 +116,7 @@ function Todo(props) {
           {/* Title Input */}
           <input
             id={props.id}
-            className="todo-text"
+            className="pr-text"
             type="text"
             value={newTitle}
             onChange={handleTitleChange}
@@ -128,7 +129,7 @@ function Todo(props) {
           {/* Description Input */}
           <textarea
             id={props.id}
-            className="todo-text"
+            className="pr-text"
             type="text"
             value={newDescription}
             onChange={handleDescriptionChange}
@@ -150,7 +151,7 @@ function Todo(props) {
             Cancel
             <span className="visually-hidden">editing {props.title}</span>
           </button>
-          <button type="submit" className="btn btn__primary todo-edit">
+          <button type="submit" className="btn btn__primary">
             Save
             <span className="visually-hidden">edits to {props.title}</span>
           </button>
@@ -169,7 +170,7 @@ function Todo(props) {
   const viewTemplate = (
     <div className="pr-post-container">
       <div className="stack-small">
-          <h3 className="todo-label" htmlFor={props.id}>
+          <h3 htmlFor={props.id}>
             {props.title}
           </h3>
 
@@ -208,7 +209,7 @@ function Todo(props) {
     </div>
   );
 
-  return <li className="todo">{isEditing ? editingTemplate : viewTemplate}</li>;
+  return <li className="pr-post-list-item">{isEditing ? editingTemplate : viewTemplate}</li>;
 }
 
-export default Todo;
+export default PrPost;

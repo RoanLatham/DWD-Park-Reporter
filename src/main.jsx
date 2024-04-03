@@ -4,15 +4,6 @@ import App from './App.jsx'
 import './base.css'
 import './park-reporter.css'
 
-
-
-// const DATA = [
-//   { id: "todo-0", name: "Data Test", completed: true, location: { latitude: "##", longitude: "##", error: "##" },},
-//   // { id: "todo-1", name: "Sleep", completed: false },
-//   // { id: "todo-2", name: "Repeat", completed: false,},
-// ];
-// localStorage.setItem('tasks', JSON.stringify(DATA));
-
 if ("serviceWorker" in navigator) {
  window.addEventListener("load", () => {
  navigator.serviceWorker
@@ -32,29 +23,17 @@ function exportToJSON(data, filename) {
   const blob = new Blob([jsonContent], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
 
+  // Is this really how people do this?
   const a = document.createElement('a');
   a.href = url;
   a.download = filename;
   a.click();
-
-  // Clean up by revoking the object URL
   URL.revokeObjectURL(url);
 }
 
-// async function PopulateWithDefaultData() {
-//   const response = await fetch('/default-data.json');
-//   if (!response.ok) {
-//     throw new Error(`Error fetching default data!: ${response.status}`);
-//   }
-//   const defaultDATA = await response.json();
-//   localStorage.setItem('tasks', JSON.stringify(defaultDATA));
-//   return defaultDATA;
-// }
 
-
-// // Attemtp to load data from local storage, if none exists populate the browsers local storage with default data
+// Attempt to load data from local storage, if none exists populate the browsers local storage with default data
 // const DATA = JSON.parse(localStorage.getItem('tasks')) || PopulateWithDefaultData();
-
 
 //load default dat json, save it to local sotage and also return it for use when the apps first loads
 async function PopulateWithDefaultData() {
@@ -84,7 +63,7 @@ async function loadData() {
 loadData().then((DATA) => {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App tasks={DATA} exportToJSON={exportToJSON}/>
+    <App posts={DATA} exportToJSON={exportToJSON}/>
   </React.StrictMode>,
 )
 }).catch((error) => {
