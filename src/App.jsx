@@ -63,29 +63,6 @@ function App(props) {
   }
 
   // Filter buttons:
-  // // Construct filter options
-  // const FILTER_MAP = {
-  //   All: () => true,
-  //   Active: (task) => !task.completed,
-  //   Completed: (task) => task.completed,
-  // };
-  
-  // // generate list of filter name usign only keys from filter map
-  // const FILTER_NAMES = Object.keys(FILTER_MAP);
-
-  // // Use state to keep track of applied filter
-  // const [filter, setFilter] = useState("All");
-
-  // // Automatically generate buttons for each filter 
-  // const filterList = FILTER_NAMES.map((name) => (
-  //   <FilterButton
-  //     key={name}
-  //     name={name}
-  //     isPressed={name === filter}
-  //     setFilter={setFilter}
-  //   />
-  // ));
-
   // Defining categories and their subtags as objects
   const wildlifeCategory = {
     name: 'Wildlife',
@@ -100,7 +77,7 @@ function App(props) {
     // Construct filter options
     const FILTER_MAP = {
       All: () => true,
-      Wildlife: (post) => !post.category == "Wildlife",
+      Wildlife: (post) => post.category == "Wildlife",
       Maintenance: (post) => post.category == "Maintenance",
     };
     
@@ -120,21 +97,6 @@ function App(props) {
       />
     ));
 
-    //filter post
-    // set category for a given post ID in postslist
-    // function categorisePost(id, newCategory) {
-    //   // Map over every post, edit the given post and leave the rest untouched 
-    //   const editedPostList = posts.map((post) => {
-    //     if (id === post.id) {
-    //       // If this post has the same ID as the edited post copy the post and update its category
-    //       return { ...post, category: newCategory};
-    //     }
-    //     // Return the original post to the postlist if it's not the edited post
-    //     return post;
-    //   });
-    //   setPosts(editedPostList);
-    // }
-
   // Posts CRUD
   // constuct new post and add to postslist
   function addPost(title, description) {
@@ -143,7 +105,6 @@ function App(props) {
     const newPost = {
       id: id,
       title: title,
-      category: 'Maintenance',
       description: description,
       date: getDate(),
       location: { latitude: "##", longitude: "##", error: "##" },
@@ -164,26 +125,11 @@ function App(props) {
       day: 'numeric',
       hour: 'numeric',
       minute: 'numeric',
-      second: 'numeric',
       hour12: true
     });
   
     return formattedDateTime;
   }
-
-  // function toggleTaskCompleted(id) {
-  //   const updatedTasks = tasks.map((task) => {
-  //     // if this task has the same ID as the edited task
-  //     if (id === task.id) {
-  //       // use object spread to make a new object
-  //       // whose `completed` prop has been inverted
-  //       return { ...task, completed: !task.completed };
-  //     }
-  //     return task;
-  //   });
-  //   setTasks(updatedTasks);
-  //   //localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-  // }
   
   //Delete a post by deleteign its attached photo from indexed db and using filter, save every post that does not have the given ID, resulting in teh given id beign removed from the posts list
   function deletePost(id) {
@@ -192,27 +138,13 @@ function App(props) {
     setPosts(remainingPosts);
   }
 
-  // // Edit Title or desc for a given post ID in postslist
-  // function editPost(id, newName, newDescription) {
-  //   // Map over every post, edit the given post and leave the rest untouched 
-  //   const editedPostList = posts.map((post) => {
-  //     if (id === post.id) {
-  //       // If this post has the same ID as the edited post copy the post and update its name
-  //       return { ...post, title: newName, description: newDescription};
-  //     }
-  //     // Return the original post to the postlist if it's not the edited post
-  //     return post;
-  //   });
-  //   setPosts(editedPostList);
-  // }
-
-  // Edit Title or desc for a given post ID in postslist
-  function editPost(id, newName, newDescription, newCategory) {
+  // Edit details for a given post ID in postslist
+  function editPost(id, newName, newDescription, newCategory, newSubcategory) {
     // Map over every post, edit the given post and leave the rest untouched 
     const editedPostList = posts.map((post) => {
       if (id === post.id) {
         // If this post has the same ID as the edited post copy the post and update its name
-        return { ...post, title: newName, description: newDescription, category: newCategory};
+        return { ...post, title: newName, description: newDescription, category: newCategory, subcategory: newSubcategory};
       }
       // Return the original post to the postlist if it's not the edited post
       return post;
@@ -238,11 +170,13 @@ function App(props) {
     setPosts(locatedPostList);
   }
    
-
+  // Store and edit or delete posts in bowsers local storage
   const [posts, setPosts] = usePersistedState('posts', []);
 
+  //keep track of last post added to preform async operations on it like geo locating 
   const [lastInsertedId, setLastInsertedId] = useState("");
 
+  // Add photoed attribute to given post, update and save postlist
   function photoedPost(id) {
     console.log("photoedPost", id);
     // Map over every post, add photo attibued to the given post and leave the rest untouched 
@@ -259,7 +193,7 @@ function App(props) {
     setPosts(photoedPostList);
   }
 
-  const postsList = posts
+  const filteredPostsList = posts
   //apply set filter to postlist
   .filter(FILTER_MAP[filter])
   .map((post) => (
@@ -269,18 +203,18 @@ function App(props) {
       title={post.title}
       description={post.description}
       category={post.category}
+      subcategory={post.subcategory}
       photo={post.photo}
       key={post.id}
       location={post.location} 
       date={post.date}
 
       // Functions past to posts
-      // toggleTaskCompleted={toggleTaskCompleted}
       photoedPost={photoedPost}
       deletePost={deletePost}
       editPost={editPost}
 
-      // Pass categorties for editing the post category in the edit template
+      // Pass categorties to posts for editing the post category in the edit template
       maintenanceCategory = {maintenanceCategory}
       wildlifeCategory = {wildlifeCategory}
     />
@@ -305,7 +239,7 @@ function App(props) {
           role="list"
           className="stack-large stack-exception"
           aria-labelledby="list-heading">
-          {postsList}
+          {filteredPostsList}
         </ul>
         : 
         <div className="pr-title-container pr-container"> <h2>No Posts, Create one above!</h2></div>}

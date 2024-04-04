@@ -33,11 +33,27 @@ function PrPost(props) {
   // State for the selected category
   const [selectedCategory, setSelectedCategory] = useState(props.category);
 
+  // State for the selected subcategory
+  const [selectedSubcategory, setSelectedSubcategory] = useState('');
+
   // Handle category change
   function handleCategoryChange(e) {
     setSelectedCategory(e.target.value);
+    setSelectedSubcategory(''); //reset subcategory when main category is changed
   }
 
+  // Handle subcategory change
+  function handleSubcategoryChange(e) {
+    setSelectedSubcategory(e.target.value);
+  }
+
+  // Determine which subtags to display based on the selected category
+  const subtags = selectedCategory === props.maintenanceCategory.name
+    ? props.maintenanceCategory.subtags // If category is maintenanceCategory load maintenance subtags
+    : props.wildlifeCategory.subtags; // If not, load wildlife sub category
+
+  
+  //use previous with use efect to focus on edit button on view template and focus on title feild on edit template
   function usePrevious(value) {
     const ref = useRef();
     useEffect(() => {
@@ -53,6 +69,7 @@ function PrPost(props) {
       editButtonRef.current.focus();
     }
   }, [wasEditing, isEditing]);
+
 
   function handleTitleChange(e) {
     setNewTitle(e.target.value);
@@ -81,7 +98,7 @@ function PrPost(props) {
   
     if (!titleErrorText && !descriptionErrorText) {
       // If both fields are not empty, proceed with editing the post
-      props.editPost(props.id, newTitle, newDescription, selectedCategory);
+      props.editPost(props.id, newTitle, newDescription, selectedCategory, selectedSubcategory);
       setNewTitle("");
       setNewDescription("");
       setTitleError("");
@@ -131,7 +148,7 @@ function PrPost(props) {
             ref={editTitleFieldRef}
             placeholder={`Change post title (${props.title})`}
           />
-          {/* If titleError is true / does exits, displayt input vlaidaion message */}
+          {/* If titleError is true / does exits, display input vlaidaion message */}
           {titleError && <p className="pr-vallidation-message">{titleError}</p>}
 
           {/* Description Input */}
@@ -143,7 +160,7 @@ function PrPost(props) {
             onChange={handleDescriptionChange}
             placeholder={`Change post description (${props.title})`}
           />
-          {/* If descriptionError is true / does exits, displayt input vlaidaion message */}
+          {/* If descriptionError is true / does exits, display input vlaidaion message */}
           {descriptionError && <p className="pr-vallidation-message">{descriptionError}</p>}
 
           <div className="btn-group">
@@ -151,10 +168,12 @@ function PrPost(props) {
               <option value={props.maintenanceCategory.name}> {props.maintenanceCategory.name}</option>
               <option value={props.wildlifeCategory.name}> {props.wildlifeCategory.name}</option>
             </select>
-          {/* Sub options should go here */}
-            <select className="btn pr-select">
-              {/* Sub options should go here */}
-            </select>
+            <select className="btn pr-select" value={selectedSubcategory} onChange={handleSubcategoryChange}>
+              <option key='0' value=''> none </option>
+              {subtags.map((subtag, index) => (
+               <option key={index} value={subtag}>{subtag}</option>
+              ))}
+           </select>
           </div>
 
 
@@ -190,18 +209,20 @@ function PrPost(props) {
   const viewTemplate = (
     <div className="pr-post-container">
       <div className="stack-small">
-          <h3 htmlFor={props.id}>
-            {props.title}
-          </h3>
+        <h3 htmlFor={props.id}>
+          {props.title}
+        </h3>
 
-          <p>
-          {props.description}
-          </p>
+        <p>
+        {props.description}
+        </p>
 
-          <p>
-          {props.category}
-          </p>
-        
+        <p>
+        {props.category}
+        <br />
+        -{props.subcategory}
+        </p>
+      
         <ViewPhoto id={props.id} alt={props.title} />
 
         <p>
@@ -220,9 +241,10 @@ function PrPost(props) {
             className="btn"
             onClick={() => {
               setEditing(true); // Toggle isEditing state
-              setNewTitle(props.title); // Set newTitle with props.title, so the input feield is pre-populated with the old title
-              setNewDescription(props.description); // Set newDescription with props.desciption, so the input feield is pre-populated with the old title
-              setSelectedCategory(props.category);
+              setNewTitle(props.title); // Set newTitle with props.title, so the input field is pre-populated with the old title
+              setNewDescription(props.description); // Set newDescription with props.desciption, so the input field is pre-populated with the old title
+              setSelectedCategory(props.category); // Set new category with to current category, so the input field is pre-populated 
+              setSelectedSubcategory(props.subcategory); // Set the new sub categoryto the old usb category, so the input field is pre-populated 
             }}
             ref={editButtonRef}
           >
