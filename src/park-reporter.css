@@ -166,16 +166,21 @@ textarea{
   background-color: var(--pr-primary-color-focus);
 }
 
-
+.toggle-btn-primary,
 .toggle-btn{
   border-width: 0px;
 }
 
+.toggle-btn-primary,
 .btn.toggle-btn[aria-pressed="true"] {
   border-width: 0px;
   background-color: var(--pr-secondary-selected-color);
   border-color: #4d4d4d;
   text-decoration: underline;
+}
+/* override backroung color for primary variant */
+.toggle-btn-primary[aria-pressed="true"]{
+  background-color: var(--pr-primary-selected-color);
 }
 
 .btn__danger{

@@ -63,7 +63,7 @@ function App(props) {
   }
 
   // Filter buttons:
-  // Defining categories and their subtags as objects
+  // Define categories and their subtags as objects
   const wildlifeCategory = {
     name: 'Wildlife',
     subtags: ['Birds', 'Mammals', 'Insects'],
@@ -74,28 +74,77 @@ function App(props) {
     subtags: ['Cleaning', 'Repairs', 'Landscaping'],
   };
 
-    // Construct filter options
-    const FILTER_MAP = {
-      All: () => true,
-      Wildlife: (post) => post.category == "Wildlife",
-      Maintenance: (post) => post.category == "Maintenance",
-    };
-    
-    // generate list of filter name usign only keys from filter map
-    const FILTER_NAMES = Object.keys(FILTER_MAP);
+  // Main category filter options for buttons to use
+  const mainFilterMap = {
+    All: () => true,
+    Wildlife: (post) => post.category === wildlifeCategory.name,
+    Maintenance: (post) => post.category === maintenanceCategory.name,
+  };
+
+  // Use state to keep track of applied filters
+  const [mainFilter, setMainFilter] = useState('All');
+  const [subFilter, setSubFilter] = useState('All');
+  // Initialize subFilterMap within the state to allow re-rendering
+  const [subFilterMap, setSubFilterMap] = useState({
+    All: () => true,
+  });
+
+  // Function to update subFilterMap with subtags of the selected main category
+  const updateSubFilterMap = (subtags) => {
+    const newSubFilterMap = { All: () => true };
+    subtags.forEach(subtag => {
+      newSubFilterMap[subtag] = (post) => post.subcategory === subtag;
+    });
+    setSubFilterMap(newSubFilterMap); // Update the state to re-render the subfilter buttons
+  };
+
+  // Generate buttons for main filters
+const mainFilterList = (
+  // construct a React fragment 
+  <>
+    <h5>Categories:</h5>
+    <div className="btn-group">
+      {Object.keys(mainFilterMap).map((name) => (
+        <FilterButton
+          key={name}
+          name={name}
+          className = "btn btn__primary toggle-btn-primary"
+          isPressed={name === mainFilter}
+          setFilter={() => {
+            setMainFilter(name);
+            setSubFilter('All'); // Reset subfilter when changing main filter
+            // Determine the appropriate subtags based on the main category selected
+            const subtags = name === wildlifeCategory.name ? wildlifeCategory.subtags : 
+                            name === maintenanceCategory.name ? maintenanceCategory.subtags : [];
+            // Call updateSubFilterMap with the appropriate subtags
+            updateSubFilterMap(subtags);
+          }}
+        />
+      ))}
+    </div>
+  </>
+);
   
-    // Use state to keep track of applied filter
-    const [filter, setFilter] = useState("All");
-  
-    // Automatically generate buttons for each filter 
-    const filterList = FILTER_NAMES.map((name) => (
-      <FilterButton
-        key={name}
-        name={name}
-        isPressed={name === filter}
-        setFilter={setFilter}
-      />
-    ));
+
+  // Generate buttons for subfilters based on selected main filter
+  const subFilterList = mainFilter === 'All' ? null : ( // Return null if main category is "All"
+    // construct a React fragment 
+    <> 
+      <h5>Subcategories:</h5>
+      <div className="btn-group">
+        {Object.keys(subFilterMap).map((name) => (
+          <FilterButton
+            key={name}
+            name={name}
+            className = "btn toggle-btn"
+            isPressed={name === subFilter}
+            setFilter={() => setSubFilter(name)}
+          />
+        ))}
+      </div>
+    </>
+  );
+
 
   // Posts CRUD
   // constuct new post and add to postslist
@@ -195,7 +244,8 @@ function App(props) {
 
   const filteredPostsList = posts
   //apply set filter to postlist
-  .filter(FILTER_MAP[filter])
+  .filter(mainFilterMap[mainFilter])
+  .filter(subFilterMap[subFilter])
   .map((post) => (
     <PrPost
       // Post details
@@ -229,8 +279,9 @@ function App(props) {
         </div>
         <Form addTask={addPost} geoFindMe={geoLocatePost}/>
         <div className="pr-title-container pr-container"> <h2 id="list-heading" aria-hidden="true" >Posts</h2></div>
-        <div className="filters btn-group stack-exception pr-container">
-        {filterList}
+        <div className="filters btn-group-vertical stack-exception pr-container">
+          {mainFilterList}
+          {subFilterList}
         </div>
 
         {/* Conditonal rendering, if no post are present load a containter with text stating there are no posts */}
