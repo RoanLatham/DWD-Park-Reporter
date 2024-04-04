@@ -1,13 +1,5 @@
 :root {
   --pr-background-color: #fff;
-  /* --pr-dark-grey: #1d2331;
-  --pr-medium-grey: #374052;
-  --pr-light-grey: #1d2331; */
-  /* --pr-primary-color: #96F2A1;
-  --pr-accent-color: #96F2DF; */
-/* 
-  --pr-primary-color: #96F2A1;
-  --pr-accent-color: #96F2DF; */
 
   --pr-app-container-background: #f0f9f6;
   --pr-medium-grey: #ffffff;
@@ -24,6 +16,10 @@
 
   --pr-danger-color: #fccbd0;
   --pr-danger-color-focus: #e8aeb3;
+
+  --pr-shadow:
+  0 2px 4px 0 rgb(0 0 0 / 20%),
+  0 2.5rem 5rem 0 rgb(0 0 0 / 10%);
 }
 
 /* change font weight but ntoi for headings */
@@ -97,9 +93,7 @@ h1{
   padding: 3rem;
   margin-bottom: 50vh;
   border-radius: 40px;
-  box-shadow:
-  0 2px 4px 0 rgb(0 0 0 / 20%),
-  0 2.5rem 5rem 0 rgb(0 0 0 / 10%);
+  box-shadow: var(--pr-shadow)
 }
 
 .pr-title-container{
@@ -117,9 +111,7 @@ h1{
   background-color: var(--pr-medium-grey);
   padding: 3rem;
   border-radius: 40px;
-  box-shadow:
-  0 2px 4px 0 rgb(0 0 0 / 20%),
-  0 2.5rem 5rem 0 rgb(0 0 0 / 10%);
+  box-shadow: var(--pr-shadow)
 }
 
 .pr-container{
@@ -148,15 +140,16 @@ textarea{
   border-radius: calc(40px + 1rem);
   padding: 1rem;
   padding-bottom: 2rem;
-  box-shadow:
-  0 2px 4px 0 rgb(0 0 0 / 20%),
-  0 2.5rem 5rem 0 rgb(0 0 0 / 10%);
+  box-shadow: var(--pr-shadow)
 }
 
 .btn{
   background-color: var(--pr-secondary-color);
   color: #090c12;
-  border-color: #00000000;
+  border-width: 0;
+  box-shadow:
+  0 2px 3px 0 rgb(0 0 0 / 10%),
+  0 0.8rem 1.2rem 0 rgb(0 0 0 / 4%);
 }
 
 .btn:hover, .btn:focus {
@@ -165,8 +158,8 @@ textarea{
 
 .btn__primary{
   background-color: var(--pr-primary-color);
-  color: #090c12;
-  border-color: #00000000;
+  /* color: #090c12;
+  border-width: 0; */
 }
 
 .btn__primary:hover, .btn__primary:focus {

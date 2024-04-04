@@ -35,7 +35,7 @@ export function WebcamCapture(props) {
   
     useEffect(() => {
       if (photoSave) {
-        props.photoedTask(imgId);
+        props.photoedPost(imgId);
         setPhotoTaken(true); // Set photoTaken to true after saving photo
         setPhotoSave(false);
       }

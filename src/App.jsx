@@ -15,26 +15,22 @@ function usePrevious(value) {
   return ref.current;
 }
 
-const FILTER_MAP = {
-  All: () => true,
-  Active: (task) => !task.completed,
-  Completed: (task) => task.completed,
-};
-
-const FILTER_NAMES = Object.keys(FILTER_MAP);
-
 function App(props) {
 
-  const geoFindMe = () => {
+  // Get Locataion funtions:
+  // Get current Position from broswer
+  // If locatiing successful run locationSuccess()
+  const geoLocatePost = () => {
     if (!navigator.geolocation) {
       console.log("Geolocation is not supported by your browser");
     } else {
       console.log("Locating…");
-      navigator.geolocation.getCurrentPosition(success, error);
+      navigator.geolocation.getCurrentPosition(locationSuccess, geoLocateError);
     }
   };
   
-  const success = (position) => {
+  // If geolocation was successfull  run locatePost, which saves location data to given post ID
+  const locationSuccess = (position) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
     console.log(latitude, longitude);
@@ -42,7 +38,7 @@ function App(props) {
     console.log(
       `Try here: https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`
     );
-    locateTask(lastInsertedId, {
+    locatePost(lastInsertedId, {
       latitude: latitude,
       longitude: longitude,
       error: "",
@@ -51,10 +47,11 @@ function App(props) {
     });
   };
   
-  const error = () => {
+  const geoLocateError = () => {
     console.log("Unable to retrieve your location");
   };
 
+  // Persistante storage using broswers local storage
   function usePersistedState(key, defaultValue){
     const [state, setState] = useState(() => JSON.parse(localStorage.getItem((key)) || defaultValue));
 
@@ -65,8 +62,21 @@ function App(props) {
     return [state, setState];
   }
 
+  // Filter buttons:
+  // Construct filter options
+  const FILTER_MAP = {
+    All: () => true,
+    Active: (task) => !task.completed,
+    Completed: (task) => task.completed,
+  };
+  
+  // generate list of filter name usign only keys from filter map
+  const FILTER_NAMES = Object.keys(FILTER_MAP);
+
+  // Use state to keep track of applied filter
   const [filter, setFilter] = useState("All");
 
+  // Automatically generate buttons for each filter 
   const filterList = FILTER_NAMES.map((name) => (
     <FilterButton
       key={name}
@@ -76,9 +86,12 @@ function App(props) {
     />
   ));
 
-  function addTask(title, description) {
+
+  // Posts CRUD
+  // constuct new post and add to postslist
+  function addPost(title, description) {
     const id = "post-" + nanoid();
-    const newTask = {
+    const newPost = {
       id: id,
       title: title,
       description: description,
@@ -86,7 +99,7 @@ function App(props) {
       location: { latitude: "##", longitude: "##", error: "##" },
     };
     setLastInsertedId(id);
-    setTasks([...posts, newTask]);
+    setPosts([...posts, newPost]);
   }
 
   // function toggleTaskCompleted(id) {
@@ -102,80 +115,86 @@ function App(props) {
   //   setTasks(updatedTasks);
   //   //localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   // }
-
-  function deleteTask(id) {
+  
+  //Delete a post by deleteign its attached photo from indexed db and using filter, save every post that does not have the given ID, resulting in teh given id beign removed from the posts list
+  function deletePost(id) {
     deletePhoto(id)
-    const remainingTasks = posts.filter((task) => id !== task.id);
-    setTasks(remainingTasks);
-    //localStorage.setItem("tasks", JSON.stringify(remainingTasks));
+    const remainingPosts = posts.filter((post) => id !== post.id);
+    setPosts(remainingPosts);
   }
 
-  function editTask(id, newName, newDescription) {
-    const editedTaskList = posts.map((task) => {
-      // if this task has the same ID as the edited task
-      if (id === task.id) {
-        // Copy the task and update its name
-        return { ...task, title: newName, description: newDescription};
+  // Edit Title or desc for a given post ID in postslist
+  function editPost(id, newName, newDescription) {
+    // Map over every post, edit the given post and leave the rest untouched 
+    const editedPostList = posts.map((post) => {
+      if (id === post.id) {
+        // If this post has the same ID as the edited post copy the post and update its name
+        return { ...post, title: newName, description: newDescription};
       }
-      // Return the original task if it's not the edited task
-      return task;
+      // Return the original post to the postlist if it's not the edited post
+      return post;
     });
-    setTasks(editedTaskList);
-    //localStorage.setItem("tasks", JSON.stringify(editedTaskList));
+    setPosts(editedPostList);
   }
 
-  function locateTask(id, location) {
-    console.log("locate Task", id, " before");
+  // Add location to post attributes, update and save postlist with new location
+  function locatePost(id, location) {
+    console.log("locate Post", id, " before");
     console.log(location, posts);
-    const locatedTaskList = posts.map((task) => {
-      // if this task has the same ID as the edited task
-      if (id === task.id) {
-        //
-        return { ...task, location: location };
+    // Map over every post, add location data to the given post and leave the rest untouched 
+    const locatedPostList = posts.map((post) => {
+      // If this post  has the same ID as the located post add the location data to this post
+      if (id === post.id) {
+        // If this post has the same ID as the located post copy the post and update its location
+        return { ...post, location: location };
       }
-      return task;
+      // Return the post unchanged to the postlist if it's not the located post
+      return post;
     });
-    console.log(locatedTaskList);
-    setTasks(locatedTaskList);
+    console.log(locatedPostList);
+    setPosts(locatedPostList);
   }
    
 
-  const [posts, setTasks] = usePersistedState('tasks', []);
-  //const [tasks, setTasks] = useState(props.tasks);
+  const [posts, setPosts] = usePersistedState('posts', []);
 
   const [lastInsertedId, setLastInsertedId] = useState("");
 
-  function photoedTask(id) {
-    console.log("photoedTask", id);
-    const photoedTaskList = posts.map((task) => {
-      // if this task has the same ID as the edited task
-      if (id === task.id) {
-        //
-        return { ...task, photo: true };
+  function photoedPost(id) {
+    console.log("photoedPost", id);
+    // Map over every post, add photo attibued to the given post and leave the rest untouched 
+    const photoedPostList = posts.map((post) => {
+      // If this post  has the same ID as the located post set the photo attribute to true
+      if (id === post.id) {
+        // If this post has the same ID as the photoed post copy the post and update its photo attribute to true
+        return { ...post, photo: true };
       }
-      return task;
+      // Return the post unchanged to the postlist if it's not the photoed post
+      return post;
     });
-    console.log(photoedTaskList);
-    setTasks(photoedTaskList);
+    console.log(photoedPostList);
+    setPosts(photoedPostList);
   }
 
   const postsList = posts
+  //apply set filter to postlist
   .filter(FILTER_MAP[filter])
-  .map((task) => (
+  .map((post) => (
     <PrPost
-      id={task.id}
-      title={task.title}
-      description={task.description}
-      completed={task.completed}
-      key={task.id}
-      location={task.location} 
+      id={post.id}
+      title={post.title}
+      description={post.description}
+      completed={post.completed}
+      key={post.id}
+      location={post.location} 
       // toggleTaskCompleted={toggleTaskCompleted}
-      photoedTask={photoedTask}
-      photo={task.photo}
-      deleteTask={deleteTask}
-      editTask={editTask}
+      photoedPost={photoedPost}
+      photo={post.photo}
+      deletePost={deletePost}
+      editPost={editPost}
     />
   ));
+
 
   return (
     <div>
@@ -183,7 +202,7 @@ function App(props) {
         <div className="pr-title-container pr-container">
           <h1>Park Reporter 🌳</h1>
         </div>
-        <Form addTask={addTask} geoFindMe={geoFindMe}/>
+        <Form addTask={addPost} geoFindMe={geoLocatePost}/>
         <div className="pr-title-container pr-container"> <h2 id="list-heading" aria-hidden="true" >Posts</h2></div>
         <div className="filters btn-group stack-exception pr-container">
         {filterList}

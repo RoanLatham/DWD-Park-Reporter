@@ -72,8 +72,8 @@ function PrPost(props) {
     setDescriptionError(descriptionErrorText);
   
     if (!titleErrorText && !descriptionErrorText) {
-      // If both fields are not empty, proceed with editing the task
-      props.editTask(props.id, newTitle, newDescription);
+      // If both fields are not empty, proceed with editing the post
+      props.editPost(props.id, newTitle, newDescription);
       setNewTitle("");
       setNewDescription("");
       setTitleError("");
@@ -139,8 +139,8 @@ function PrPost(props) {
           {descriptionError && <p className="pr-vallidation-message">{descriptionError}</p>}
 
         </div>
-        {props.photo ? <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={changePhotoButton} /> :
-          <WebcamCapture id={props.id} photoedTask={props.photoedTask} takePhotoButton={takePhotoButton} />
+        {props.photo ? <WebcamCapture id={props.id} photoedPost={props.photoedPost} takePhotoButton={changePhotoButton} /> :
+          <WebcamCapture id={props.id} photoedPost={props.photoedPost} takePhotoButton={takePhotoButton} />
         }
         <div className="btn-group">
           <button
@@ -158,7 +158,7 @@ function PrPost(props) {
           <button
             type="button"
             className="btn btn__danger"
-            onClick={() => props.deleteTask(props.id)}
+            onClick={() => props.deletePost(props.id)}
           >
             Delete post<span className="visually-hidden">{props.title}</span>
           </button>
@@ -181,10 +181,9 @@ function PrPost(props) {
         <ViewPhoto id={props.id} alt={props.title} />
 
         <p>
-            {/* &nbsp;| la {props.latitude}
-            &nbsp;| lo {props.longitude} */}
-            <a href={props.location.mapURL}> (map)</a>
-            &nbsp; | &nbsp;
+            <a href={props.location.mapURL}> Lat: {props.location.latitude}°N | Lon: {props.location.longitude}°W | (View map)</a>
+            <br />
+            <br />
             <a href={props.location.smsURL}>(sms)</a>
         </p>
 
@@ -201,9 +200,6 @@ function PrPost(props) {
           >
             Edit <span className="visually-hidden">{props.title}</span>
           </button>
-          
-
-
         </div>
       </div>
     </div>

@@ -33,7 +33,7 @@ function exportToJSON(data, filename) {
 
 
 // Attempt to load data from local storage, if none exists populate the browsers local storage with default data
-// const DATA = JSON.parse(localStorage.getItem('tasks')) || PopulateWithDefaultData();
+// const DATA = JSON.parse(localStorage.getItem('posts')) || PopulateWithDefaultData();
 
 //load default dat json, save it to local sotage and also return it for use when the apps first loads
 async function PopulateWithDefaultData() {
@@ -42,14 +42,14 @@ async function PopulateWithDefaultData() {
     throw new Error(`Error fetching default data!: ${response.status}`);
   }
   const defaultDATA = await response.json();
-  localStorage.setItem('tasks', JSON.stringify(defaultDATA));
+  localStorage.setItem('posts', JSON.stringify(defaultDATA));
   return defaultDATA;
 }
 
 // Attempt to load data from local storage, if none exists load defauld data instead and save default data to local storage
 async function loadData() {
   let data;
-  const tasks = localStorage.getItem('tasks');
+  const tasks = localStorage.getItem('posts');
   // If data is found in local sotrage load it, if not run the funtion to fetch and use default-data.json
   if (tasks) {
     data = JSON.parse(tasks);
