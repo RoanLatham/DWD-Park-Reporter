@@ -270,6 +270,16 @@ const mainFilterList = (
     />
   ));
 
+  function submitEdit(){
+    props.editPost(
+      props.id,
+      newTitle,
+      newDescription,
+      selectedCategory,
+      selectedSubcategory
+    );
+  }
+
 
   return (
     <div>
