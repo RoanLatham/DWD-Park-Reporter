@@ -91,15 +91,36 @@ function App(props) {
   // constuct new post and add to postslist
   function addPost(title, description) {
     const id = "post-" + nanoid();
+
     const newPost = {
       id: id,
       title: title,
       description: description,
       completed: false,
+      date: getDate(),
       location: { latitude: "##", longitude: "##", error: "##" },
     };
+
     setLastInsertedId(id);
     setPosts([...posts, newPost]);
+  }
+
+  function getDate() {
+    // Create a new date object for the current date and time
+    const currentDateTime = new Date();
+  
+    // Format the date and time in a human-readable way e.g., "March 15, 2024, 10:30:00 AM"
+    const formattedDateTime = currentDateTime.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    });
+  
+    return formattedDateTime;
   }
 
   // function toggleTaskCompleted(id) {
@@ -181,15 +202,18 @@ function App(props) {
   .filter(FILTER_MAP[filter])
   .map((post) => (
     <PrPost
+      // Post details
       id={post.id}
       title={post.title}
       description={post.description}
+      photo={post.photo}
       completed={post.completed}
       key={post.id}
       location={post.location} 
+      date={post.date}
+      // Functions past to posts
       // toggleTaskCompleted={toggleTaskCompleted}
       photoedPost={photoedPost}
-      photo={post.photo}
       deletePost={deletePost}
       editPost={editPost}
     />

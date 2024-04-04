@@ -185,6 +185,9 @@ function PrPost(props) {
             <br />
             <br />
             <a href={props.location.smsURL}>(sms)</a>
+            <br />
+            <br />
+            posted on {props.date}
         </p>
 
         <div className="btn-group btn-group-vertical">
