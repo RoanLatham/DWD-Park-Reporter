@@ -6,6 +6,7 @@
   --pr-dark-grey: #ffffff;
 
   --pr-primary-color: #c2e7ff;
+  --pr-primary-selected-color: #b2d8f0;
   --pr-primary-color-focus: #abd6f2;
 
   /* --pr-secondary-color: #c2ffea; */
@@ -156,16 +157,6 @@ textarea{
   background-color: var(--pr-secondary-color-focus);
 }
 
-.btn__primary{
-  background-color: var(--pr-primary-color);
-  /* color: #090c12;
-  border-width: 0; */
-}
-
-.btn__primary:hover, .btn__primary:focus {
-  background-color: var(--pr-primary-color-focus);
-}
-
 .toggle-btn-primary,
 .toggle-btn{
   border-width: 0px;
@@ -175,12 +166,25 @@ textarea{
 .btn.toggle-btn[aria-pressed="true"] {
   border-width: 0px;
   background-color: var(--pr-secondary-selected-color);
-  border-color: #4d4d4d;
   text-decoration: underline;
 }
-/* override backroung color for primary variant */
+
+.toggle-btn-primary,
+.btn__primary{
+  background-color: var(--pr-primary-color);
+  text-decoration: none;
+}
+
+/* override backgroung color for primary variant */
 .toggle-btn-primary[aria-pressed="true"]{
   background-color: var(--pr-primary-selected-color);
+  text-decoration: underline;
+}
+
+
+
+.btn__primary:hover, .btn__primary:focus {
+  background-color: var(--pr-primary-color-focus);
 }
 
 .btn__danger{
