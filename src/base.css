@@ -78,7 +78,7 @@ body {
 .form-group > textarea, 
 .form-group > input[type="text"] {
   display: inline-block;
-  margin-top: 1.5rem;
+  margin-top: 1.4rem;
 }
 .btn {
   border: 0.2rem solid #4d4d4d;
@@ -109,6 +109,7 @@ body {
 .btn-group {
   display: flex;
   justify-content: space-between;
+  margin-top: 1.4rem;
 }
 .btn-group > * {
   flex: 1 1 49%;

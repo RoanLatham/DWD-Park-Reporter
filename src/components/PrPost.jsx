@@ -141,7 +141,7 @@ function PrPost(props) {
           {/* Title Input */}
           <input
             id={props.id}
-            className="pr-text"
+            className="input pr-text pr-post-input"
             type="text"
             value={newTitle}
             onChange={handleTitleChange}
@@ -154,7 +154,7 @@ function PrPost(props) {
           {/* Description Input */}
           <textarea
             id={props.id}
-            className="pr-text"
+            className="input pr-text pr-post-input"
             type="text"
             value={newDescription}
             onChange={handleDescriptionChange}

@@ -21,6 +21,9 @@
   --pr-shadow:
   0 2px 4px 0 rgb(0 0 0 / 20%),
   0 2.5rem 5rem 0 rgb(0 0 0 / 10%);
+  --pr-subtle-shadow:
+  0 2px 3px 0 rgb(0 0 0 / 10%),
+  0 0.8rem 1.2rem 0 rgb(0 0 0 / 4%);
 }
 
 /* change font weight but ntoi for headings */
@@ -148,9 +151,7 @@ textarea{
   background-color: var(--pr-secondary-color);
   color: #090c12;
   border-width: 0;
-  box-shadow:
-  0 2px 3px 0 rgb(0 0 0 / 10%),
-  0 0.8rem 1.2rem 0 rgb(0 0 0 / 4%);
+  box-shadow: var(--pr-subtle-shadow)
 }
 
 .btn:hover, .btn:focus {
@@ -227,10 +228,11 @@ textarea{
 }
 
 .pr-text {
-  border: 2px solid #565656;
+  border: 2px solid #000;
   min-height: 4.4rem;
   padding: 0.4rem 0.8rem;
   width: 100%;
+  box-shadow: var(--pr-subtle-shadow);
 }
 
 .pr-text:focus-visible {
