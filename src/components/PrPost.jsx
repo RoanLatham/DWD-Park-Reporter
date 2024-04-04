@@ -26,9 +26,17 @@ function PrPost(props) {
 
   const wasEditing = usePrevious(isEditing);
 
-  //States for Input validation on edit template
+  // States for Input validation on edit template
   const [titleError, setTitleError] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
+
+  // State for the selected category
+  const [selectedCategory, setSelectedCategory] = useState(props.category);
+
+  // Handle category change
+  function handleCategoryChange(e) {
+    setSelectedCategory(e.target.value);
+  }
 
   function usePrevious(value) {
     const ref = useRef();
@@ -73,7 +81,7 @@ function PrPost(props) {
   
     if (!titleErrorText && !descriptionErrorText) {
       // If both fields are not empty, proceed with editing the post
-      props.editPost(props.id, newTitle, newDescription);
+      props.editPost(props.id, newTitle, newDescription, selectedCategory);
       setNewTitle("");
       setNewDescription("");
       setTitleError("");
@@ -138,6 +146,18 @@ function PrPost(props) {
           {/* If descriptionError is true / does exits, displayt input vlaidaion message */}
           {descriptionError && <p className="pr-vallidation-message">{descriptionError}</p>}
 
+          <div className="btn-group">
+            <select className="btn pr-select" value={selectedCategory} onChange={handleCategoryChange}>
+              <option value={props.maintenanceCategory.name}> {props.maintenanceCategory.name}</option>
+              <option value={props.wildlifeCategory.name}> {props.wildlifeCategory.name}</option>
+            </select>
+          {/* Sub options should go here */}
+            <select className="btn pr-select">
+              {/* Sub options should go here */}
+            </select>
+          </div>
+
+
         </div>
         {props.photo ? <WebcamCapture id={props.id} photoedPost={props.photoedPost} takePhotoButton={changePhotoButton} /> :
           <WebcamCapture id={props.id} photoedPost={props.photoedPost} takePhotoButton={takePhotoButton} />
@@ -177,6 +197,10 @@ function PrPost(props) {
           <p>
           {props.description}
           </p>
+
+          <p>
+          {props.category}
+          </p>
         
         <ViewPhoto id={props.id} alt={props.title} />
 
@@ -198,6 +222,7 @@ function PrPost(props) {
               setEditing(true); // Toggle isEditing state
               setNewTitle(props.title); // Set newTitle with props.title, so the input feield is pre-populated with the old title
               setNewDescription(props.description); // Set newDescription with props.desciption, so the input feield is pre-populated with the old title
+              setSelectedCategory(props.category);
             }}
             ref={editButtonRef}
           >

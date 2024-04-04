@@ -48,10 +48,10 @@ function App(props) {
   };
   
   const geoLocateError = () => {
-    console.log("Unable to retrieve your location");
+    console.log("Unable to retrieve post location");
   };
 
-  // Persistante storage using broswers local storage
+  // Persistant storage using broswers local storage
   function usePersistedState(key, defaultValue){
     const [state, setState] = useState(() => JSON.parse(localStorage.getItem((key)) || defaultValue));
 
@@ -63,29 +63,77 @@ function App(props) {
   }
 
   // Filter buttons:
-  // Construct filter options
-  const FILTER_MAP = {
-    All: () => true,
-    Active: (task) => !task.completed,
-    Completed: (task) => task.completed,
-  };
+  // // Construct filter options
+  // const FILTER_MAP = {
+  //   All: () => true,
+  //   Active: (task) => !task.completed,
+  //   Completed: (task) => task.completed,
+  // };
   
-  // generate list of filter name usign only keys from filter map
-  const FILTER_NAMES = Object.keys(FILTER_MAP);
+  // // generate list of filter name usign only keys from filter map
+  // const FILTER_NAMES = Object.keys(FILTER_MAP);
 
-  // Use state to keep track of applied filter
-  const [filter, setFilter] = useState("All");
+  // // Use state to keep track of applied filter
+  // const [filter, setFilter] = useState("All");
 
-  // Automatically generate buttons for each filter 
-  const filterList = FILTER_NAMES.map((name) => (
-    <FilterButton
-      key={name}
-      name={name}
-      isPressed={name === filter}
-      setFilter={setFilter}
-    />
-  ));
+  // // Automatically generate buttons for each filter 
+  // const filterList = FILTER_NAMES.map((name) => (
+  //   <FilterButton
+  //     key={name}
+  //     name={name}
+  //     isPressed={name === filter}
+  //     setFilter={setFilter}
+  //   />
+  // ));
 
+  // Defining categories and their subtags as objects
+  const wildlifeCategory = {
+    name: 'Wildlife',
+    subtags: ['Birds', 'Mammals', 'Insects'],
+  };
+
+  const maintenanceCategory = {
+    name: 'Maintenance',
+    subtags: ['Cleaning', 'Repairs', 'Landscaping'],
+  };
+
+    // Construct filter options
+    const FILTER_MAP = {
+      All: () => true,
+      Wildlife: (post) => !post.category == "Wildlife",
+      Maintenance: (post) => post.category == "Maintenance",
+    };
+    
+    // generate list of filter name usign only keys from filter map
+    const FILTER_NAMES = Object.keys(FILTER_MAP);
+  
+    // Use state to keep track of applied filter
+    const [filter, setFilter] = useState("All");
+  
+    // Automatically generate buttons for each filter 
+    const filterList = FILTER_NAMES.map((name) => (
+      <FilterButton
+        key={name}
+        name={name}
+        isPressed={name === filter}
+        setFilter={setFilter}
+      />
+    ));
+
+    //filter post
+    // set category for a given post ID in postslist
+    // function categorisePost(id, newCategory) {
+    //   // Map over every post, edit the given post and leave the rest untouched 
+    //   const editedPostList = posts.map((post) => {
+    //     if (id === post.id) {
+    //       // If this post has the same ID as the edited post copy the post and update its category
+    //       return { ...post, category: newCategory};
+    //     }
+    //     // Return the original post to the postlist if it's not the edited post
+    //     return post;
+    //   });
+    //   setPosts(editedPostList);
+    // }
 
   // Posts CRUD
   // constuct new post and add to postslist
@@ -95,8 +143,8 @@ function App(props) {
     const newPost = {
       id: id,
       title: title,
+      category: 'Maintenance',
       description: description,
-      completed: false,
       date: getDate(),
       location: { latitude: "##", longitude: "##", error: "##" },
     };
@@ -144,13 +192,27 @@ function App(props) {
     setPosts(remainingPosts);
   }
 
+  // // Edit Title or desc for a given post ID in postslist
+  // function editPost(id, newName, newDescription) {
+  //   // Map over every post, edit the given post and leave the rest untouched 
+  //   const editedPostList = posts.map((post) => {
+  //     if (id === post.id) {
+  //       // If this post has the same ID as the edited post copy the post and update its name
+  //       return { ...post, title: newName, description: newDescription};
+  //     }
+  //     // Return the original post to the postlist if it's not the edited post
+  //     return post;
+  //   });
+  //   setPosts(editedPostList);
+  // }
+
   // Edit Title or desc for a given post ID in postslist
-  function editPost(id, newName, newDescription) {
+  function editPost(id, newName, newDescription, newCategory) {
     // Map over every post, edit the given post and leave the rest untouched 
     const editedPostList = posts.map((post) => {
       if (id === post.id) {
         // If this post has the same ID as the edited post copy the post and update its name
-        return { ...post, title: newName, description: newDescription};
+        return { ...post, title: newName, description: newDescription, category: newCategory};
       }
       // Return the original post to the postlist if it's not the edited post
       return post;
@@ -206,16 +268,21 @@ function App(props) {
       id={post.id}
       title={post.title}
       description={post.description}
+      category={post.category}
       photo={post.photo}
-      completed={post.completed}
       key={post.id}
       location={post.location} 
       date={post.date}
+
       // Functions past to posts
       // toggleTaskCompleted={toggleTaskCompleted}
       photoedPost={photoedPost}
       deletePost={deletePost}
       editPost={editPost}
+
+      // Pass categorties for editing the post category in the edit template
+      maintenanceCategory = {maintenanceCategory}
+      wildlifeCategory = {wildlifeCategory}
     />
   ));
 
@@ -231,7 +298,8 @@ function App(props) {
         <div className="filters btn-group stack-exception pr-container">
         {filterList}
         </div>
-         {/* Conditonal rendering, if no post are present load a containter with text stating there are no posts */}
+
+        {/* Conditonal rendering, if no post are present load a containter with text stating there are no posts */}
         {posts.length > 0 ? 
         <ul
           role="list"
@@ -241,6 +309,7 @@ function App(props) {
         </ul>
         : 
         <div className="pr-title-container pr-container"> <h2>No Posts, Create one above!</h2></div>}
+
         <button id="Export-Button"type="button" className="btn" onClick={() => props.exportToJSON(posts, 'Park-Reporter-Posts.json')}> Export Posts</button>
       </div>
     </div>
