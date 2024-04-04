@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { nanoid } from "nanoid";
 import PrPost from "./components/PrPost.jsx";
-import Form from "./components/Form";
+import AddForm from "./components/AddForm.jsx";
 import FilterButton from "./components/FilterButton";
 import { deletePhoto } from "./db.jsx"; // To read and write photos
 
@@ -148,13 +148,15 @@ const mainFilterList = (
 
   // Posts CRUD
   // constuct new post and add to postslist
-  function addPost(title, description) {
+  function addPost(title, description, category, subcategory) {
     const id = "post-" + nanoid();
 
     const newPost = {
       id: id,
       title: title,
       description: description,
+      category: category,
+      subcategory: subcategory,
       date: getDate(),
       location: { latitude: "##", longitude: "##", error: "##" },
     };
@@ -188,12 +190,12 @@ const mainFilterList = (
   }
 
   // Edit details for a given post ID in postslist
-  function editPost(id, newName, newDescription, newCategory, newSubcategory) {
+  function editPost(id, title, description, category, subcategory) {
     // Map over every post, edit the given post and leave the rest untouched 
     const editedPostList = posts.map((post) => {
       if (id === post.id) {
         // If this post has the same ID as the edited post copy the post and update its name
-        return { ...post, title: newName, description: newDescription, category: newCategory, subcategory: newSubcategory};
+        return { ...post, title: title, description: description, category: category, subcategory: subcategory};
       }
       // Return the original post to the postlist if it's not the edited post
       return post;
@@ -287,25 +289,48 @@ const mainFilterList = (
         <div className="pr-title-container pr-container">
           <h1>Park Reporter 🌳</h1>
         </div>
-        <Form addTask={addPost} geoFindMe={geoLocatePost}/>
-        <div className="pr-title-container pr-container"> <h2 id="list-heading" aria-hidden="true" >Posts</h2></div>
+        <AddForm
+          addPost={addPost}
+          geoLocatePost={geoLocatePost}
+          maintenanceCategory={maintenanceCategory}
+          wildlifeCategory={wildlifeCategory}
+        />
+        <div className="pr-title-container pr-container">
+          {" "}
+          <h2 id="list-heading" aria-hidden="true">
+            Posts
+          </h2>
+        </div>
         <div className="filters btn-group-vertical stack-exception pr-container">
           {mainFilterList}
           {subFilterList}
         </div>
 
         {/* Conditonal rendering, if no post are present load a containter with text stating there are no posts */}
-        {posts.length > 0 ? 
-        <ul
-          role="list"
-          className="stack-large stack-exception"
-          aria-labelledby="list-heading">
-          {filteredPostsList}
-        </ul>
-        : 
-        <div className="pr-title-container pr-container"> <h2>No Posts, Create one above!</h2></div>}
+        {posts.length > 0 ? (
+          <ul
+            role="list"
+            className="stack-large stack-exception"
+            aria-labelledby="list-heading"
+          >
+            {filteredPostsList}
+          </ul>
+        ) : (
+          <div className="pr-title-container pr-container">
+            {" "}
+            <h2>No Posts, Create one above!</h2>
+          </div>
+        )}
 
-        <button id="Export-Button"type="button" className="btn" onClick={() => props.exportToJSON(posts, 'Park-Reporter-Posts.json')}> Export Posts</button>
+        <button
+          id="Export-Button"
+          type="button"
+          className="btn"
+          onClick={() => props.exportToJSON(posts, "Park-Reporter-Posts.json")}
+        >
+          {" "}
+          Export Posts
+        </button>
       </div>
     </div>
   );

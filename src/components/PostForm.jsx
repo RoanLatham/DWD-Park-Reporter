@@ -54,18 +54,30 @@ function PostForm(props) {
 
     if (!titleErrorText && !descriptionErrorText) {
       // If both fields are not empty, proceed with editing the post
-        props.Submit(
-            props.id,
-            newTitle,
-            newDescription,
-            selectedCategory,
-            selectedSubcategory
-            );
+      //surely theres a better way to do this? whatever
+      // Check if 'id' is present for edit operation
+      if (props.id) {
+        props.submit(
+          props.id,
+          newTitle,
+          newDescription,
+          selectedCategory,
+          selectedSubcategory
+        );
+      } else {
+        // 'id' is not present, perform add operation
+        props.submit(
+          newTitle,
+          newDescription,
+          selectedCategory,
+          selectedSubcategory
+        );
+      }
       setNewTitle("");
       setNewDescription("");
       setTitleError("");
       setDescriptionError("");
-      props.handleSave()
+      props.handleSave();
     }
   }
 
@@ -114,7 +126,7 @@ function PostForm(props) {
           value={newTitle}
           onChange={handleTitleChange}
           ref={props.editTitleFieldRef}
-          placeholder={`Change post title (${props.title})`}
+          placeholder={props.titlePlaceholderText}
         />
         {/* If titleError is true / does exits, display input vlaidaion message */}
         {titleError && <p className="pr-vallidation-message">{titleError}</p>}
@@ -126,7 +138,7 @@ function PostForm(props) {
           type="text"
           value={newDescription}
           onChange={handleDescriptionChange}
-          placeholder={`Change post description (${props.title})`}
+          placeholder={props.descriptionPlaceholderText}
         />
         {/* If descriptionError is true / does exits, display input vlaidaion message */}
         {descriptionError && (
@@ -139,6 +151,10 @@ function PostForm(props) {
             value={selectedCategory}
             onChange={handleCategoryChange}
           >
+            <option key="0" value="">
+              {" "}
+              none{" "}
+            </option>
             <option value={props.maintenanceCategory.name}>
               {" "}
               {props.maintenanceCategory.name}
@@ -157,11 +173,13 @@ function PostForm(props) {
               {" "}
               none{" "}
             </option>
-            {subtags.map((subtag, index) => (
-              <option key={index} value={subtag}>
+            {/* Conditinal rendering only show subcategoriews in main category is not null, sub categorires are reset elsewhere everytime a main category selection chagnges*/}
+            {selectedCategory && selectedCategory !== "" && 
+            subtags.map((subtag, index) => (
+            <option key={index} value={subtag}>
                 {subtag}
-              </option>
-            ))}
+  </option>
+))}
           </select>
         </div>
       </div>

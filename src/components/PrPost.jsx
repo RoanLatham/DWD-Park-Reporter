@@ -78,10 +78,24 @@ function PrPost(props) {
 
   const editingTemplate = (
     <div className="pr-post-container">
-      
-      <PostForm {...props} Submit = {props.editPost} handleSave ={handleSave} buttonGroup={<ButtonGroup  {...props} editTitleFieldRef = {editTitleFieldRef} handleCancel = {handleCancel}/>}>
-      </PostForm>
-
+      <PostForm
+        {...props}
+        submit={props.editPost}
+        handleSave={handleSave}
+        title = {props.title}
+        description = {props.description}
+        category = {props.category}
+        subcategory = {props.subcategory}
+        titlePlaceholderText = {`Change post title (${props.title})`}
+        descriptionPlaceholderText = {`Change post description (${props.title})`}
+        buttonGroup={
+          <ButtonGroup
+            {...props}
+            editTitleFieldRef={editTitleFieldRef}
+            handleCancel={handleCancel}
+          />
+        }
+      ></PostForm>
     </div>
   );
 

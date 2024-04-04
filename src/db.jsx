@@ -40,7 +40,7 @@ export async function deletePhoto(id) {
 
 function GetPhotoSrc(id) {
   try{
-    console.log("getPhotoSrc", id);
+    // console.log("getPhotoSrc", id);
 
     // Use useLiveQuery to query the database for the any photos with the specified ID
     const img = useLiveQuery(() => db.photos.where("id").equals(id).toArray());
@@ -51,7 +51,7 @@ function GetPhotoSrc(id) {
       return img[0].imgSrc;
     } else {
       // Case for when no image exists in db yet
-      console.warn(`No image found for ID ${id}`);
+      // console.warn(`No image found for ID ${id}`);
       return null; 
     }
   } catch (error) {
