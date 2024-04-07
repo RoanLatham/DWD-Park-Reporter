@@ -3,6 +3,8 @@ import Popup from "reactjs-popup"; // For our popups
 import "reactjs-popup/dist/index.css"; // For the popups to look nicer.
 import { WebcamCapture, ViewPhoto } from './WebcamCapture.jsx';
 import PostForm from './PostForm.jsx'
+import { addPhoto, GetPhotoSrc } from "../db.jsx"; // To read and write photos
+
 function usePrevious(value) {
   const ref = useRef();
   useEffect(() => {
@@ -39,15 +41,12 @@ function PrPost(props) {
   // }, [wasEditing, isEditing]);
 
   function handleCancel() {
-    // Reset all used variables so when the user edits again nothing is left over
     setEditing(false);
-    setNewTitle("");
-    setNewDescription("");
-    setTitleError("");
-    setDescriptionError("");
   }
 
-  function handleSave() {
+  //recive details form form and add ID for edit Post funtion
+  function handleSubmit(title, description, category, subcategory) {
+    props.editPost(props.id, title, description, category, subcategory)
     setEditing(false);
   }
 
@@ -80,12 +79,7 @@ function PrPost(props) {
     <div className="pr-post-container">
       <PostForm
         {...props}
-        submit={props.editPost}
-        handleSave={handleSave}
-        title = {props.title}
-        description = {props.description}
-        category = {props.category}
-        subcategory = {props.subcategory}
+        submit={handleSubmit}
         titlePlaceholderText = {`Change post title (${props.title})`}
         descriptionPlaceholderText = {`Change post description (${props.title})`}
         buttonGroup={

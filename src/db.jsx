@@ -10,7 +10,8 @@ db.version(1).stores({
 async function addPhoto(id, imgSrc) {
   console.log("addPhoto", imgSrc.length, id);
   try {
-    // Add the new photo with the same id used as a key for posts array in localStoarge to avoid having a second pk for one post item
+    // Add the new photo with the same id used as a key for posts array in localStoarge to avoid 
+    //having a second pk for one post item
     const i = await db.photos.put({
       id: id,
       imgSrc: imgSrc,
@@ -45,7 +46,7 @@ function GetPhotoSrc(id) {
     // Use useLiveQuery to query the database for the any photos with the specified ID
     const img = useLiveQuery(() => db.photos.where("id").equals(id).toArray());
 
-    console.table(img);
+    // console.table(img);
 
     if (Array.isArray(img) && img.length > 0) {
       return img[0].imgSrc;

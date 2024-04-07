@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Popup from 'reactjs-popup';
 import Webcam from 'react-webcam';
-import { addPhoto, GetPhotoSrc } from "../db.jsx"; // To read and write photos
+import { GetPhotoSrc } from "../db.jsx"; // To read and write photos
 
 export function WebcamCapture(props) {
     const webcamRef = useRef(null);
@@ -35,7 +35,7 @@ export function WebcamCapture(props) {
   
     useEffect(() => {
       if (photoSave) {
-        props.photoedPost(imgId);
+        // props.photoedPost(imgId);
         setPhotoTaken(true); // Set photoTaken to true after saving photo
         setPhotoSave(false);
       }
@@ -51,7 +51,7 @@ export function WebcamCapture(props) {
     );
   
     const savePhoto = (id, imgSrc, close) => {
-      addPhoto(id, imgSrc);
+      props.returnPhoto(imgSrc);
       setImgId(id);
       setPhotoSave(true);
       close();
@@ -90,9 +90,10 @@ export function WebcamCapture(props) {
               {imgSrc && <img src={imgSrc} />}
               <div className="btn-group btn-group-vertical">
                 <div className="btn-group">
-                  <select className="btn pr-select" value={selectedDeviceId} onChange={handleSelectChange}>
+                {/* conditionally dissable the dropdown if an image has been taken using disabled={!!imgSrc}*/}
+                  <select className="btn pr-select" value={selectedDeviceId} onChange={handleSelectChange} disabled={!!imgSrc}> 
                     {webcams.map((device) => (
-                      // List all avaible webcam deveices, adn facign modes for mobile, if the webcam has a label use that, if not construct a name using the camera id
+                      // List all available webcam devices, and facing modes for mobile, if the webcam has a label use
                       <option key={device.deviceId} value={device.deviceId}>
                         {device.label || `Camera ${webcams.indexOf(device) + 1}`} {device.facingMode}
                       </option>

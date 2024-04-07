@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import PrPost from "./components/PrPost.jsx";
 import AddForm from "./components/AddForm.jsx";
 import FilterButton from "./components/FilterButton";
-import { deletePhoto } from "./db.jsx"; // To read and write photos
+import { addPhoto, deletePhoto } from "./db.jsx"; // To read and write photos
 
 
 function usePrevious(value) {
@@ -19,7 +19,7 @@ function App(props) {
 
   // Get Locataion funtions:
   // Get current Position from broswer
-  // If locatiing successful run locationSuccess()
+  // If position recived run locationSuccess()
   const geoLocatePost = () => {
     if (!navigator.geolocation) {
       console.log("Geolocation is not supported by your browser");
@@ -33,11 +33,11 @@ function App(props) {
   const locationSuccess = (position) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    console.log(latitude, longitude);
-    console.log(`Latitude: ${latitude}°, Longitude: ${longitude}°`);
-    console.log(
-      `Try here: https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`
-    );
+    // console.log(latitude, longitude);
+    // console.log(`Latitude: ${latitude}°, Longitude: ${longitude}°`);
+    // console.log(
+    //   `View here: https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`
+    // );
     locatePost(lastInsertedId, {
       latitude: latitude,
       longitude: longitude,
@@ -182,7 +182,9 @@ const mainFilterList = (
     return formattedDateTime;
   }
   
-  //Delete a post by deleteign its attached photo from indexed db and using filter, save every post that does not have the given ID, resulting in teh given id beign removed from the posts list
+  //Delete a post by deleteing its attached photo from indexed db and using filter, 
+  //save every post that does not have the given ID, 
+  //resulting in the post with the given id being removed from the posts list
   function deletePost(id) {
     deletePhoto(id)
     const remainingPosts = posts.filter((post) => id !== post.id);
@@ -245,7 +247,7 @@ const mainFilterList = (
   }
 
   const filteredPostsList = posts
-  //apply set filter to postlist
+  //apply set category adn subcategory filters to postlist
   .filter(mainFilterMap[mainFilter])
   .filter(subFilterMap[subFilter])
   .map((post) => (
@@ -272,17 +274,6 @@ const mainFilterList = (
     />
   ));
 
-  function submitEdit(){
-    props.editPost(
-      props.id,
-      newTitle,
-      newDescription,
-      selectedCategory,
-      selectedSubcategory
-    );
-  }
-
-
   return (
     <div>
       <div className="park-reporter-app">
@@ -292,11 +283,11 @@ const mainFilterList = (
         <AddForm
           addPost={addPost}
           geoLocatePost={geoLocatePost}
+          photoedPost={photoedPost}
           maintenanceCategory={maintenanceCategory}
           wildlifeCategory={wildlifeCategory}
         />
         <div className="pr-title-container pr-container">
-          {" "}
           <h2 id="list-heading" aria-hidden="true">
             Posts
           </h2>
@@ -317,7 +308,6 @@ const mainFilterList = (
           </ul>
         ) : (
           <div className="pr-title-container pr-container">
-            {" "}
             <h2>No Posts, Create one above!</h2>
           </div>
         )}
@@ -328,7 +318,6 @@ const mainFilterList = (
           className="btn"
           onClick={() => props.exportToJSON(posts, "Park-Reporter-Posts.json")}
         >
-          {" "}
           Export Posts
         </button>
       </div>

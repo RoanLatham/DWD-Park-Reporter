@@ -46,7 +46,7 @@ async function PopulateWithDefaultData() {
   return defaultDATA;
 }
 
-// Attempt to load data from local storage, if none exists load defauld data instead and save default data to local storage
+// Attempt to load data from local storage, if none exists load default data instead and save default data to local storage
 async function loadData() {
   let data;
   const tasks = localStorage.getItem('posts');
@@ -63,7 +63,7 @@ async function loadData() {
 loadData().then((DATA) => {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App posts={DATA} exportToJSON={exportToJSON}/>
+    <App exportToJSON={exportToJSON}/>
   </React.StrictMode>,
 )
 }).catch((error) => {
