@@ -273,7 +273,10 @@ const mainFilterList = (
     <div>
       <div className="park-reporter-app">
         <div className="pr-title-container pr-container">
-          <h1>Park Reporter 🌳</h1>
+          <div style={{ display: "flex", alignItems: "center"}}>
+            <img src="./park.svg" alt="Park" style={{ marginRight: "10px" , height: "3em"}} />
+            <h1 style={{ marginRight: "1em" ,}}>Park Reporter</h1>
+          </div>
         </div>
         <AddForm
           addPost={addPost}
