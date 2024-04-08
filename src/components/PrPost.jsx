@@ -93,6 +93,24 @@ function PrPost(props) {
     </div>
   );
 
+  const SMSLink = () => {
+
+    const body = `https://www.openstreetmap.org/#map=18/${props.location.latitude},${props.location.longitude}`
+
+    if (props.category === undefined) {
+      return <a href={`sms://00447700900xxxx?${body}`}>(sms - General Director)</a>;
+    } else if (props.category === props.wildlifeCategory.name) {
+      return <a href={`sms://00447700901xxxx?${body}`}>(sms - Wildlife Coordinator)</a>;
+    } else if (props.category === props.maintenanceCategory.name) {
+      return <a href={`sms://00447700902xxxx?${body}`}>(sms - Maintenance Chief)</a>;
+    } else {
+      return null;
+    }
+  };
+  
+
+  
+
   const viewTemplate = (
     <div className="pr-post-container">
       <div className="stack-small">
@@ -116,7 +134,8 @@ function PrPost(props) {
             <a href={props.location.mapURL}> Lat: {props.location.latitude}°N | Lon: {props.location.longitude}°W | (View map)</a>
             <br />
             <br />
-            <a href={props.location.smsURL}>(sms)</a>
+            {/* <a href={props.location.smsURL}>(sms)</a> */}
+            <SMSLink {...props}></SMSLink>
             <br />
             <br />
             posted on {props.date}

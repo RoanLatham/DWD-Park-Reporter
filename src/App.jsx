@@ -33,17 +33,12 @@ function App(props) {
   const locationSuccess = (position) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    // console.log(latitude, longitude);
-    // console.log(`Latitude: ${latitude}°, Longitude: ${longitude}°`);
-    // console.log(
-    //   `View here: https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`
-    // );
     locatePost(lastInsertedId, {
       latitude: latitude,
       longitude: longitude,
       error: "",
       mapURL: `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`,
-      smsURL: `sms://00447700900xxxx?body=https://maps.google.com/?q=${latitude},${longitude}`,
+      //smsURL: `sms://00447700900xxxx?body=https://maps.google.com/?q=${latitude},${longitude}`,
     });
   };
   
@@ -207,8 +202,8 @@ const mainFilterList = (
 
   // Add location to post attributes, update and save postlist with new location
   function locatePost(id, location) {
-    console.log("locate Post", id, " before");
-    console.log(location, posts);
+    // console.log("locate Post", id, " before");
+    // console.log(location, posts);
     // Map over every post, add location data to the given post and leave the rest untouched 
     const locatedPostList = posts.map((post) => {
       // If this post  has the same ID as the located post add the location data to this post
