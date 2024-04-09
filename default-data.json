@@ -1,15 +1,75 @@
 [
   {
     "id": "todo-FoXpqsx6mbfyBR_fyRdi2",
-    "title": "Default Post",
-    "description": "testing loading default posts on new host",
+    "title": "Exxample Posts",
+    "description": "Since this is your first time loading the app some example posts have been loaded!",
     "completed": false,
     "location": {
-      "latitude": 55.6357,
-      "longitude": -4.674,
+      "latitude": 0,
+      "longitude": 0,
       "error": "",
-      "mapURL": "https://www.openstreetmap.org/#map=18/55.6357/-4.674",
-      "smsURL": "sms://00447700900xxxx?body=https://maps.google.com/?q=55.6357,-4.674"
+      "mapURL": "https://www.openstreetmap.org/#map=18/55.6357/-4.674"
+
     }
+  },
+  {
+    "id": "post-puunVdMrzZi4HFC-Zic2W",
+    "title": "Bunny spotted",
+    "description": "Wild bunny spotted, unknown breed with golden fur.",
+    "date": "April 4, 2024 at 3:18 AM",
+    "location": {
+      "latitude": 55.6339839,
+      "longitude": -4.67824,
+      "error": "",
+      "mapURL": "https://www.openstreetmap.org/#map=18/55.6339839/-4.67824"
+    },
+    "photo": true,
+    "category": "Wildlife",
+    "subcategory": "Mammals"
+  },
+  {
+    "id": "post-JalRxZvyi-uTmtdk80UAo",
+    "title": "Logs need lifted",
+    "description": "Logs left after cutting trees, need relocated ",
+    "date": "April 4, 2024 at 8:21 PM",
+    "location": {
+      "latitude": 55.6319224,
+      "longitude": -4.6754547,
+      "error": "",
+      "mapURL": "https://www.openstreetmap.org/#map=18/55.6319224/-4.6754547"
+    },
+    "photo": true,
+    "category": "Maintenance",
+    "subcategory": "Cleaning"
+  },
+  {
+    "id": "post-YQfHlEADCrWv6pFNnY_Vo",
+    "title": "Tree stump ",
+    "description": "Tree stump needs removed ",
+    "date": "April 4, 2024 at 8:23 PM",
+    "location": {
+      "latitude": 55.6303356,
+      "longitude": -4.6714812,
+      "error": "",
+      "mapURL": "https://www.openstreetmap.org/#map=18/55.6303356/-4.6714812"
+    },
+    "photo": true,
+    "category": "Maintenance",
+    "subcategory": "Landscaping"
+  },
+  {
+    "id": "post-9kf_z_yrhYZACwcDfbrQU",
+    "title": "Drinks can",
+    "description": "Can of irn bru lifted",
+    "date": "April 4, 2024 at 8:24 PM",
+    "location": {
+      "latitude": 55.6349953,
+      "longitude": -4.676918,
+      "error": "",
+      "mapURL": "https://www.openstreetmap.org/#map=18/55.6349953/-4.676918"
+    },
+    "photo": true,
+    "category": "Maintenance",
+    "subcategory": "Cleaning"
   }
 ]
