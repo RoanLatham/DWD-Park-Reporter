@@ -178,12 +178,12 @@ textarea{
   text-decoration: underline;
 }
 
-/* shadows get cut off by overfil method, removed for now, revisit */
+
 .toggle-btn-primary,
 .toggle-btn{
   border-width: 0px;
   box-shadow: 0 0px 0px 0 rgb(0 0 0 / 0%),
-  0 0px 0px 0 rgb(0 0 0 / 0%);;
+  0 0px 0px 0 rgb(0 0 0 / 0%); /* shadows get cut off by overfil method, removed for now, revisit */
 }
 
 .btn__primary:hover, .btn__primary:focus {
@@ -244,5 +244,13 @@ textarea{
 .pr-filter-container{
   overflow: scroll;
   /* box-shadow: var(--pr-subtle-shadow); */
+  -ms-overflow-style: none; 
+  scrollbar-width: none;
 }
+
+.pr-filter-container::-webkit-scrollbar {
+  display: none;
+}
+
+
 
