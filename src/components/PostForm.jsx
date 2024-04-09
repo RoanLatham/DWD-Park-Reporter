@@ -56,6 +56,16 @@ function PostForm(props) {
     setNewDescription(e.target.value);
   }
 
+  function reset(){
+    setNewTitle("");
+    setNewDescription("");
+    setTitleError("");
+    setDescriptionError("");
+    setTempPhoto(null)
+    setSelectedCategory("")
+    setSelectedSubcategory("")
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -87,10 +97,7 @@ function PostForm(props) {
         // if (props.id &&tempPhoto) {
         //   addPhoto(props.id, tempPhoto);
         // }
-      setNewTitle("");
-      setNewDescription("");
-      setTitleError("");
-      setDescriptionError("");
+      reset()
     }
   }
 
