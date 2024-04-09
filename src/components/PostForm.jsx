@@ -80,12 +80,13 @@ function PostForm(props) {
           newTitle,
           newDescription,
           selectedCategory,
-          selectedSubcategory
+          selectedSubcategory,
+          tempPhoto
         );
         //save photo to indexed db on submit, or do nothing if no photo was taken
-        if (props.id &&tempPhoto) {
-          addPhoto(props.id, tempPhoto);
-        }
+        // if (props.id &&tempPhoto) {
+        //   addPhoto(props.id, tempPhoto);
+        // }
       setNewTitle("");
       setNewDescription("");
       setTitleError("");

@@ -16,9 +16,16 @@ function AddForm(props) {
     }
   }, [addition, props]);
 
-  //recive details form form and use them teo call addPost 
-  function handleSubmit(title, description, category, subcategory) {
+  //recive details form form and use them to call addPost 
+  function handleSubmit(title, description, category, subcategory, photo) {
     props.addPost( title, description, category, subcategory)
+    if (photo){
+      console.log("with photo called")
+      props.addPost( title, description, category, subcategory, photo)
+    } else {
+      console.log("without photo called")
+      props.addPost( title, description, category, subcategory)
+    }
     setAddition(true);
   }
 

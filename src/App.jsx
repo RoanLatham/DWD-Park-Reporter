@@ -146,6 +146,8 @@ function App(props) {
   // Posts CRUD
   // constuct new post and add to postslist
   function addPost(title, description, category, subcategory) {
+
+    console.log("without photo")
     const id = "post-" + nanoid();
 
     const newPost = {
@@ -160,6 +162,28 @@ function App(props) {
 
     setLastInsertedId(id);
     setPosts([...posts, newPost]);
+  }
+
+  // constuct new post and add to postslist with a photo
+  function addPost(title, description, category, subcategory, photo) {
+
+    console.log("witho photo")
+    const id = "post-" + nanoid();
+
+    const newPost = {
+      id: id,
+      title: title,
+      description: description,
+      category: category,
+      subcategory: subcategory,
+      date: getDate(),
+      location: { latitude: "##", longitude: "##", error: "##" },
+    };
+
+    setLastInsertedId(id);
+    setPosts([...posts, newPost]);
+
+    addPhoto(id, photo)
   }
 
   function getDate() {
@@ -294,6 +318,7 @@ function App(props) {
           photoedPost={photoedPost}
           maintenanceCategory={maintenanceCategory}
           wildlifeCategory={wildlifeCategory}
+          lastInsertedId= {lastInsertedId}
         />
         <div className="pr-title-container pr-container">
           <h2 id="list-heading" aria-hidden="true">

@@ -45,8 +45,11 @@ function PrPost(props) {
   }
 
   //recive details form form and add ID for edit Post funtion
-  function handleSubmit(title, description, category, subcategory) {
+  function handleSubmit(title, description, category, subcategory,photo) {
     props.editPost(props.id, title, description, category, subcategory)
+    if (photo){
+      addPhoto(props.id, photo);
+    }
     setEditing(false);
   }
 
