@@ -62,4 +62,33 @@ function GetPhotoSrc(id) {
   }
 }
 
-export { addPhoto, GetPhotoSrc };
+async function exportPhotos() {
+    const filename = "Park-Reporter-photos.json"
+    const allPhotos = await db.photos.toArray();
+    const jsonContent = JSON.stringify(allPhotos, null, 2);
+    const blob = new Blob([jsonContent], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+  
+    // Is this really how people do this?
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+// Function to import photos from a JSON file
+async function importPhotos(photosArray) {
+
+  console.log({ photosArray }); // Log the array of phot
+
+  try {
+    // Add the new photo with the same id used as a key for posts array in localStoarge to avoid 
+    await db.photos.bulkPut(photosArray);
+    console.log(`Photo ${imgSrc.length} bytes successfully added. Got id ${i}`);
+  } catch (error) {
+    console.log(`Failed to add bulk photos: ${error}`);
+  }
+}
+
+export { addPhoto, GetPhotoSrc, exportPhotos, importPhotos };

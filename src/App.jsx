@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import PrPost from "./components/PrPost.jsx";
 import AddForm from "./components/AddForm.jsx";
 import FilterButton from "./components/FilterButton";
-import { addPhoto, deletePhoto } from "./db.jsx"; // To read and write photos
+import { addPhoto, deletePhoto, exportPhotos } from "./db.jsx"; // To read and write photos
 
 
 function usePrevious(value) {
@@ -352,6 +352,15 @@ function App(props) {
           onClick={() => props.exportToJSON(posts, "Park-Reporter-Posts.json")}
         >
           Export Posts
+        </button>
+
+        <button
+          id="Export-Button"
+          type="button"
+          className="btn"
+          onClick={() => exportPhotos()}
+        >
+          Export Photos
         </button>
       </div>
     </div>

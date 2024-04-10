@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './base.css'
 import './park-reporter.css'
+import { importPhotos } from "./db.jsx"; // To read and write photos
 
 if ("serviceWorker" in navigator) {
  window.addEventListener("load", () => {
@@ -43,8 +44,22 @@ async function PopulateWithDefaultData() {
   }
   const defaultDATA = await response.json();
   localStorage.setItem('posts', JSON.stringify(defaultDATA));
+
+  fetchAndImportPhotos() 
+
   return defaultDATA;
+  
 }
+
+async function fetchAndImportPhotos() {
+  const response = await fetch('/DWD-Park-Reporter/default-photos.json');
+  if (!response.ok) {
+    throw new Error(`Error fetching default photos!: ${response.status}`);
+  }
+  const photosJson = await response.json(); // Await the resolution of the json() promise
+  importPhotos(photosJson); // Pass the parsed JSON object to the importPhotos function
+}
+
 
 // Attempt to load data from local storage, if none exists load default data instead and save default data to local storage
 async function loadData() {
