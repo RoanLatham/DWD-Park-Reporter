@@ -1,8 +1,8 @@
 
-Park reporter is a PWA web application build using React and Vite
+Park Reporter is a PWA web application built using React and Vite
 
-It allows for the creation, Display, Updating and Deletion of report posts with;
-Geo-location, human-readable timestamps, multiple SMS contacts, a multi-layered category and filter system and optional photo attachments 
+It allows for the creation, Display, Updating, and Deletion of report posts with;
+Geo-location, human-readable timestamps, multiple SMS contacts, a multi-layered category and filter system, and optional photo attachments 
 It is intended to be used by park staff in a large outdoor area to effectively report various incidents within the park.
 
 -----------------------------------------------------------------------------------
